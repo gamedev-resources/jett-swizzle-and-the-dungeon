@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
+  m_Name: ArmoryPostFX
+  m_EditorClassIdentifier: Unity.Postprocessing.Runtime::UnityEngine.Rendering.PostProcessing.PostProcessProfile
+  settings:
+  - {fileID: 11400000, guid: 1e78db4562e3bbc48b2380757e345501, type: 2}
+  - {fileID: 11400000, guid: 2ec0e818c9ffbfe408a5c5ed5fb470c7, type: 2}
+  - {fileID: 11400000, guid: 6eb0f8bd48703014e9536f8db401fcc3, type: 2}
+  - {fileID: 11400000, guid: fb5a858a05207df45bb8e1e3f4978eb8, type: 2}
+  - {fileID: 11400000, guid: 3ddc764da1056e845a97ae3b48f93799, type: 2}
+  - {fileID: 11400000, guid: e6c2630719e44b34ca56bac650cc19c4, type: 2}

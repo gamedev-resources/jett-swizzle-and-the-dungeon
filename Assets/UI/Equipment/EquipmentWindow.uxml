@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Shared/GlobalVariables.uss?fileID=7433441132597879392&amp;guid=e86b5c2a622407b4281df4a5ced1f867&amp;type=3#GlobalVariables"/>
+    <Style src="project://database/Assets/UI/Shared/GameWindow.uss?fileID=7433441132597879392&amp;guid=a6eac6cd21ae8d748ac9ca7995c689d5&amp;type=3#GameWindow"/>
+    <Style src="project://database/Assets/UI/Shared/ItemSlot.uss?fileID=7433441132597879392&amp;guid=3c6377e2310fece4b96d64307a9ff8da&amp;type=3#ItemSlot"/>
+    <Style src="project://database/Assets/UI/Equipment/EquipmentWindow.uss?fileID=7433441132597879392&amp;guid=544da120d5992614ab054c382d9dade0&amp;type=3#EquipmentWindow"/>
+    <ui:VisualElement name="equipment-content" class="equipment-content">
+        <ui:VisualElement name="equipment-layout" class="equipment-layout">
+            <ui:VisualElement name="left-column" class="equipment-column side-column">
+                <ui:VisualElement class="slot-group">
+                    <ui:Label text="HEAD" class="h2 slot-label"/>
+                    <EquipmentSlot name="slot-head"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="slot-group">
+                    <ui:Label text="WEAPON" class="h2 slot-label"/>
+                    <EquipmentSlot name="slot-weapon" allowed-category="Weapon"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="slot-group">
+                    <ui:Label text="SHIELD" class="h2 slot-label"/>
+                    <EquipmentSlot name="slot-shield" allowed-category="Shield"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="middle-column" class="equipment-column middle-column">
+                <ui:VisualElement name="preview-area" style="background-image: url(&quot;project://database/Assets/RenderTexture/CharacterPreview.renderTexture?fileID=8400000&amp;guid=20108f1d223f02340b9868fb670d1367&amp;type=2#CharacterPreview&quot;);"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="right-column" class="equipment-column side-column">
+                <ui:VisualElement class="slot-group">
+                    <ui:Label text="POTION" class="h2 slot-label"/>
+                    <EquipmentSlot name="slot-potion" allowed-category="Consumable"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="slot-group">
+                    <ui:Label text="ACCESSORY" class="h2 slot-label"/>
+                    <EquipmentSlot name="slot-accessory-1" allowed-category="Accessory"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="slot-group">
+                    <ui:Label text="UTILITY" class="h2 slot-label"/>
+                    <EquipmentSlot name="slot-utility" allowed-category="Utility"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

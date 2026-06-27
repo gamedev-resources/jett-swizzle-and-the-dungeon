@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Shared/ItemSlot.uss?fileID=7433441132597879392&amp;guid=3c6377e2310fece4b96d64307a9ff8da&amp;type=3#ItemSlot"/>
+    <Style src="project://database/Assets/UI/Shared/GlobalVariables.uss?fileID=7433441132597879392&amp;guid=e86b5c2a622407b4281df4a5ced1f867&amp;type=3#GlobalVariables"/>
+    <Style src="project://database/Assets/UI/Inventory/InventoryWindow.uss?fileID=7433441132597879392&amp;guid=ec5c93d406b06b644b1eaf89d34ad6e8&amp;type=3#InventoryWindow"/>
+    <ui:VisualElement name="slot-container" style="flex-grow: 1;" />
+</ui:UXML>

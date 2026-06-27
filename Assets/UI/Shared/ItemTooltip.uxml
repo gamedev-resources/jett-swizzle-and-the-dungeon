@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Shared/GlobalVariables.uss?fileID=7433441132597879392&amp;guid=e86b5c2a622407b4281df4a5ced1f867&amp;type=3#GlobalVariables"/>
+    <Style src="project://database/Assets/UI/Shared/ItemTooltip.uss?fileID=7433441132597879392&amp;guid=3b2f4ff44fd2b2148abfcb8c2185dfa8&amp;type=3#ItemTooltip"/>
+    <ui:VisualElement name="ItemTooltip" data-source-type="ItemData, Assembly-CSharp">
+        <ui:VisualElement name="tooltip-header" class="tooltip-header">
+            <ui:VisualElement name="item-icon" class="tooltip-icon">
+                <Bindings>
+                    <ui:DataBinding property="style.backgroundImage" data-source-path="Icon" binding-mode="ToTargetOnce" update-trigger="WhenDirty"/>
+                </Bindings>
+            </ui:VisualElement>
+            <ui:VisualElement name="tooltip-header-text" class="tooltip-header-text">
+                <ui:Label name="item-name" class="tooltip-name">
+                    <Bindings>
+                        <ui:DataBinding property="text" update-trigger="WhenDirty" data-source-path="ItemName" binding-mode="ToTargetOnce"/>
+                    </Bindings>
+                </ui:Label>
+                <ui:Label name="item-category" class="tooltip-category">
+                    <Bindings>
+                        <ui:DataBinding property="text" update-trigger="WhenDirty" data-source-path="Category" binding-mode="ToTargetOnce"/>
+                    </Bindings>
+                </ui:Label>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Label name="item-rarity" class="tooltip-rarity">
+            <Bindings>
+                <ui:DataBinding property="text" update-trigger="WhenDirty" data-source-path="Rarity" binding-mode="ToTargetOnce"/>
+            </Bindings>
+        </ui:Label>
+        <ui:Label name="item-description" class="tooltip-description">
+            <Bindings>
+                <ui:DataBinding property="text" update-trigger="WhenDirty" data-source-path="Description" binding-mode="ToTargetOnce"/>
+            </Bindings>
+        </ui:Label>
+    </ui:VisualElement>
+</ui:UXML>

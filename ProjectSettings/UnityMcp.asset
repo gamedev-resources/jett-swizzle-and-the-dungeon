@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 61
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b7e0ddd3a860b4eb059ced3ef7d7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: McpBridge.Editor::WhatUpGames.McpBridge.Editor.Tools.Settings.McpToolSettings
+  _overrides:
+  - toolName: McpBridge.CreateAsset
+    state: 1
+  - toolName: McpBridge.DeleteAsset
+    state: 1
+  - toolName: McpBridge.DuplicateAsset
+    state: 1
+  - toolName: McpBridge.FindAssets
+    state: 1
+  - toolName: McpBridge.FindUnusedAssets
+    state: 1
+  - toolName: McpBridge.GetAssetDependencies
+    state: 1
+  - toolName: McpBridge.GetAssetInfo
+    state: 1
+  - toolName: McpBridge.MoveAsset
+    state: 1
+  - toolName: McpBridge.ReimportAsset
+    state: 1
+  - toolName: McpBridge.RenameAsset
+    state: 1
+  - toolName: McpBridge.GetBuildSettings
+    state: 1
+  - toolName: McpBridge.SetBuildSettings
+    state: 1
+  - toolName: McpBridge.AddComponent
+    state: 1
+  - toolName: McpBridge.GetComponents
+    state: 1
+  - toolName: McpBridge.GetObjectProperties
+    state: 1
+  - toolName: McpBridge.RemoveComponent
+    state: 1
+  - toolName: McpBridge.SetObjectProperty
+    state: 1
+  - toolName: McpBridge.ClearConsole
+    state: 1
+  - toolName: McpBridge.ForceDomainRefresh
+    state: 1
+  - toolName: McpBridge.GameViewCapture
+    state: 1
+  - toolName: McpBridge.GetCompilationState
+    state: 1
+  - toolName: McpBridge.GetConsoleLogs
+    state: 1
+  - toolName: McpBridge.ExecuteCSharp
+    state: 1
+  - toolName: McpBridge.ExecuteMenuItem
+    state: 1
+  - toolName: McpBridge.GetSelection
+    state: 1
+  - toolName: McpBridge.SetSelection
+    state: 1
+  - toolName: McpBridge.CreateGameObject
+    state: 1
+  - toolName: McpBridge.DeleteGameObject
+    state: 1
+  - toolName: McpBridge.DuplicateGameObject
+    state: 1
+  - toolName: McpBridge.FindGameObjects
+    state: 1
+  - toolName: McpBridge.GetGameObject
+    state: 1
+  - toolName: McpBridge.ModifyGameObject
+    state: 1
+  - toolName: McpBridge.GetPlayModeState
+    state: 1
+  - toolName: McpBridge.SetPlayMode
+    state: 1
+  - toolName: McpBridge.ApplyPrefabOverrides
+    state: 1
+  - toolName: McpBridge.CreatePrefab
+    state: 1
+  - toolName: McpBridge.InstantiatePrefab
+    state: 1
+  - toolName: McpBridge.UnpackPrefab
+    state: 1
+  - toolName: McpBridge.GetProjectInfo
+    state: 1
+  - toolName: McpBridge.ListPackages
+    state: 1
+  - toolName: McpBridge.GetPhysicsSettings
+    state: 1
+  - toolName: McpBridge.GetPlayerSettings
+    state: 1
+  - toolName: McpBridge.GetQualitySettings
+    state: 1
+  - toolName: McpBridge.GetScriptExecutionOrder
+    state: 1
+  - toolName: McpBridge.GetTimeAndAudioSettings
+    state: 1
+  - toolName: McpBridge.SetPhysicsSettings
+    state: 1
+  - toolName: McpBridge.SetPlayerSettings
+    state: 1
+  - toolName: McpBridge.SetQualitySettings
+    state: 1
+  - toolName: McpBridge.SetScriptExecutionOrder
+    state: 1
+  - toolName: McpBridge.SetTimeAndAudioSettings
+    state: 1
+  - toolName: McpBridge.CloseScene
+    state: 1
+  - toolName: McpBridge.GetOpenScenes
+    state: 1
+  - toolName: McpBridge.GetSceneHierarchy
+    state: 1
+  - toolName: McpBridge.NewScene
+    state: 1
+  - toolName: McpBridge.OpenScene
+    state: 1
+  - toolName: McpBridge.SaveScene
+    state: 1
+  - toolName: McpBridge.GetSceneViewCamera
+    state: 1
+  - toolName: McpBridge.SetSceneViewCamera
+    state: 1

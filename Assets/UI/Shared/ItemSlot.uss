@@ -1,0 +1,67 @@
+:root {
+}
+
+#ItemSlot {
+    width: 56px;
+    height: 56px;
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    background-image: url("project://database/Assets/Sprites/InnerPanel.png?fileID=2800000&guid=cc7a0e5088ee93f48b39c5464e43b9c5&type=3#InnerPanel");
+    align-items: center;
+    justify-content: center;
+    -unity-slice-scale: 0.15px;
+    transition-property: scale;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+
+#ItemSlot:hover {
+    scale: 1.05 1.05 1.05;
+}
+
+.rarity-uncommon > #RarityOverlay {
+    display: flex;
+    -unity-background-image-tint-color: var(--rarity-uncommon);
+}
+
+#RarityOverlay {
+    flex-grow: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("project://database/Assets/Sprites/InnerPanel_Glowing.png?fileID=2800000&guid=c413863dd26ba2546877cbd7455df8ea&type=3#InnerPanel_Glowing");
+    display: none;
+}
+
+.rarity-epic > #RarityOverlay {
+    display: flex;
+    -unity-background-image-tint-color: var(--rarity-epic);
+}
+
+.rarity-rare > #RarityOverlay {
+    display: flex;
+    -unity-background-image-tint-color: var(--rarity-rare);
+}
+
+#Icon {
+    width: 100%;
+    height: 100%;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    padding-left: 6px;
+}
+
+.drop-target {
+    border-width: 1px;
+    border-color: rgb(255, 224, 130);
+    border-radius: 6px;
+}
+
+.drop-target--invalid {
+    border-width: 1px;
+    border-color: rgb(220, 70, 70);
+    border-radius: 6px;
+} 

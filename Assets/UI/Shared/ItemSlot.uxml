@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Shared/ItemSlot.uss?fileID=7433441132597879392&amp;guid=3c6377e2310fece4b96d64307a9ff8da&amp;type=3#ItemSlot"/>
+    <Style src="project://database/Assets/UI/Shared/GlobalVariables.uss?fileID=7433441132597879392&amp;guid=e86b5c2a622407b4281df4a5ced1f867&amp;type=3#GlobalVariables"/>
+    <ui:VisualElement name="ItemSlot" style="flex-grow: 1; max-width: 56px; max-height: 56px;">
+        <ui:VisualElement name="Icon" style="background-image: none;"/>
+        <ui:VisualElement name="RarityOverlay"/>
+    </ui:VisualElement>
+</ui:UXML>

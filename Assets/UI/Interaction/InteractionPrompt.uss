@@ -1,0 +1,40 @@
+.interaction-prompt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 10px;
+    background-color: rgba(24, 22, 30, 0.9);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+}
+
+.prompt-key {
+    min-width: 22px;
+    height: 22px;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: 8px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(241, 220, 186, 0.95);
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+}
+
+.prompt-key-label {
+    color: rgb(40, 30, 24);
+    -unity-font-definition: var(--font-h2);
+    -unity-font-style: bold;
+    font-size: 14px;
+    -unity-text-align: middle-center;
+}
+
+.prompt-text {
+    color: rgb(241, 220, 186);
+    -unity-font-definition: var(--font-h2);
+    font-size: 14px;
+}

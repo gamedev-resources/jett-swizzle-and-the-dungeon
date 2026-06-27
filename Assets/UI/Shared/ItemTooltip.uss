@@ -1,0 +1,78 @@
+#ItemTooltip {
+    width: 260px;
+    padding: 8px 10px;
+    border-radius: 4px;
+    background-color: rgba(24, 22, 30, 0.95);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+#ItemTooltip Label {
+    margin: 0;
+    padding: 0;
+}
+
+.tooltip-header {
+    flex-direction: row;
+    margin-bottom: 4px;
+}
+
+.tooltip-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.3);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.tooltip-header-text {
+    margin-left: 8px;
+    justify-content: center;
+    flex-shrink: 1;
+}
+
+.tooltip-name {
+    color: rgb(241, 220, 186);
+    -unity-font-definition: var(--font-h2);
+    -unity-font-style: bold;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.tooltip-category {
+    color: rgb(160, 160, 160);
+    -unity-font-definition: var(--font-h2);
+    font-size: 11px;
+}
+
+.tooltip-rarity {
+    -unity-font-definition: var(--font-h2);
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.tooltip-description {
+    color: rgb(200, 200, 200);
+    -unity-font-definition: var(--font-h2);
+    font-size: 11px;
+    padding-top: 6px;
+    margin-top: 6px;
+    border-top-width: 1px;
+    border-top-color: rgba(255, 255, 255, 0.15);
+    white-space: normal;
+}
+
+#ItemTooltip.rarity-uncommon .tooltip-rarity {
+    color: var(--rarity-uncommon);
+}
+
+#ItemTooltip.rarity-rare .tooltip-rarity {
+    color: var(--rarity-rare);
+}
+
+#ItemTooltip.rarity-epic .tooltip-rarity {
+    color: var(--rarity-epic);
+}
