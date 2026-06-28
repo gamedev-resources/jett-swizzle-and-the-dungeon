@@ -15,16 +15,16 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 0
+    value: 1
   colored:
-    overrideState: 0
-    value: 1
-  intensity:
-    overrideState: 0
+    overrideState: 1
     value: 0
+  intensity:
+    overrideState: 1
+    value: 0.12
   size:
-    overrideState: 0
-    value: 1
+    overrideState: 1
+    value: 1.1
   lumContrib:
-    overrideState: 0
-    value: 0.8
+    overrideState: 1
+    value: 0.7
