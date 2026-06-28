@@ -31,17 +31,23 @@ public class UIController : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        var inventoryWindow = _windowManager.CreateWindow("inventory", "INVENTORY", new Vector2(50, 50));
-        _inventoryWindow.BuildInventory(inventoryWindow.ContentArea);
+        _windowManager.InitializeSharedOverlays();
 
-        var equipmentWindow = _windowManager.CreateWindow("equipment", "EQUIPMENT", new Vector2(200, 100));
-        if (_equipmentWindow != null)
+        InitializeWindow("inventory", "INVENTORY", new Vector2(50, 50), _inventoryWindow);
+        InitializeWindow("equipment", "EQUIPMENT", new Vector2(200, 100), _equipmentWindow);
+    }
+
+    private void InitializeWindow(string id, string title, Vector2 defaultPosition, WindowContentBuilder builder)
+    {
+        if (builder == null)
         {
-            _equipmentWindow.BuildEquipment(equipmentWindow);
+            Debug.LogError($"No window builder assigned for '{id}'.");
+            return;
         }
 
-        inventoryWindow.Hide();
-        equipmentWindow.Hide();
+        var window = _windowManager.GetOrCreateWindow(id, title, defaultPosition);
+        builder.Build(window);
+        window.Hide();
     }
 
     /// <summary>

@@ -27,6 +27,17 @@ public class ItemDragManipulator : PointerManipulator
     // Build the ghost once and park it on the panel root so it can float over every slot.
     public static void InitGhost(VisualElement panelRoot, StyleSheet ghostStyleSheet)
     {
+        if (_ghost != null)
+        {
+            if (_ghost.parent != panelRoot)
+            {
+                _ghost.RemoveFromHierarchy();
+                panelRoot.Add(_ghost);
+            }
+
+            return;
+        }
+
         _ghost = new VisualElement();
         _ghost.name = "drag-ghost";
         _ghost.AddToClassList("drag-ghost");

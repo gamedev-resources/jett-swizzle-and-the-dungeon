@@ -9,3 +9,4 @@
     --rarity-rare: rgb(0, 150, 255);
     --rarity-epic: rgb(146, 0, 255);
 }
+

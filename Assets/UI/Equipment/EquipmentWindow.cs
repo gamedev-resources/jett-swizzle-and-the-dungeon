@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class EquipmentWindow : MonoBehaviour
+public class EquipmentWindow : WindowContentBuilder
 {
     private static readonly string[] SLOT_NAMES =
     {
@@ -19,7 +19,7 @@ public class EquipmentWindow : MonoBehaviour
     [Header("Preview")]
     [SerializeField] private Transform _previewCharacter;
 
-    public void BuildEquipment(GameWindow window)
+    public override void Build(GameWindow window)
     {
         if (_equipmentWindowTemplate == null || _itemSlotTemplate == null)
         {
@@ -31,8 +31,13 @@ public class EquipmentWindow : MonoBehaviour
 
         window.Root.style.width = width;
         window.Root.style.height = StyleKeyword.Auto;
+        window.ContentArea.Clear();
 
         var content = _equipmentWindowTemplate.Instantiate().ExtractRoot("equipment-content");
+        if (content == null)
+        {
+            return;
+        }
 
         // The equipment slots are authored as EquipmentSlot elements in the UXML,
         // so we just hand each one the shared ItemSlot template to build its visual.
@@ -47,8 +52,9 @@ public class EquipmentWindow : MonoBehaviour
         window.ContentArea.Add(content);
 
         var previewArea = content.Q<VisualElement>("preview-area");
-        if (_previewCharacter != null)
+        if (_previewCharacter != null && previewArea != null)
+        {
             previewArea.AddManipulator(new PreviewRotateManipulator(previewArea, _previewCharacter));
+        }
     }
 }
-

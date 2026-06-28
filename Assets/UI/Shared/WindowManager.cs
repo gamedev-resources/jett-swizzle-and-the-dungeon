@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,32 +11,72 @@ public class WindowManager : MonoBehaviour
 {
     [SerializeField] private UIDocument _uiDocument;
     [SerializeField] private VisualTreeAsset _gameWindowTemplate;
+    [Header("Shared Overlays")]
+    [SerializeField] private StyleSheet _dragDropStyleSheet;
+    [SerializeField] private VisualTreeAsset _itemTooltipTemplate;
 
     private VisualElement _windowContainer;
-    private Dictionary<string, GameWindow> _windows = new();
+    private readonly Dictionary<string, GameWindow> _windows = new();
+    private SharedUIOverlayHost _sharedUIOverlayHost;
 
     private void Awake()
     {
+        if (_uiDocument == null && !TryGetComponent(out _uiDocument))
+        {
+            Debug.LogError("WindowManager requires a UIDocument reference.");
+            enabled = false;
+            return;
+        }
+
+        if (_gameWindowTemplate == null)
+        {
+            Debug.LogError("WindowManager requires a Game Window template.");
+            enabled = false;
+            return;
+        }
+
         var root = _uiDocument.rootVisualElement;
 
         // Full-screen container for all windows, ignores clicks so they pass through
-        _windowContainer = new VisualElement();
-        _windowContainer.name = "window-container";
-        _windowContainer.style.position = Position.Absolute;
-        _windowContainer.style.width = Length.Percent(100);
-        _windowContainer.style.height = Length.Percent(100);
-        _windowContainer.pickingMode = PickingMode.Ignore;
+        _windowContainer = new VisualElement() 
+        { 
+            name = "window-container", 
+            pickingMode = PickingMode.Ignore,
+            style =
+            {
+                position = Position.Absolute,
+                width = Length.Percent(100),
+                height = Length.Percent(100)
+            }
+        };
+
         root.Add(_windowContainer);
     }
 
+    public void InitializeSharedOverlays()
+    {
+        if (_sharedUIOverlayHost != null)
+        {
+            return;
+        }
+
+        _sharedUIOverlayHost = new SharedUIOverlayHost(_uiDocument.rootVisualElement, _dragDropStyleSheet, _itemTooltipTemplate);
+        _sharedUIOverlayHost.Initialize();
+    }
+
     /// <summary>
-    /// Creates a new window, restoring its position from PlayerPrefs if available.
+    /// Tries to fetch a window. If it can't, it will create a new window, restoring its position from PlayerPrefs if available.
     /// </summary>
     /// <param name="id">Unique identifier used for persistence and toggle lookups.</param>
     /// <param name="title">Display title shown in the window's title bar.</param>
     /// <param name="defaultPosition">Fallback position if no saved position exists.</param>
-    public GameWindow CreateWindow(string id, string title, Vector2 defaultPosition)
+    public GameWindow GetOrCreateWindow(string id, string title, Vector2 defaultPosition)
     {
+        if (_windows.TryGetValue(id, out var existingWindow))
+        {
+            return existingWindow;
+        }
+
         float x = PlayerPrefs.GetFloat($"window_{id}_x", defaultPosition.x);
         float y = PlayerPrefs.GetFloat($"window_{id}_y", defaultPosition.y);
 
@@ -51,7 +92,11 @@ public class WindowManager : MonoBehaviour
     /// </summary>
     public void ToggleWindow(string id)
     {
-        if (!_windows.TryGetValue(id, out var window)) return;
+        if (!_windows.TryGetValue(id, out var window))
+        {
+            Debug.LogError($"Window '{id}' has not been created.");
+            return;
+        }
 
         if (window.IsVisible)
         {
