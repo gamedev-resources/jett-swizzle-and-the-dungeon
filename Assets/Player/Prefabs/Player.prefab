@@ -1757,6 +1757,7 @@ GameObject:
   - component: {fileID: 6056544817305531145}
   - component: {fileID: 1517696668220391853}
   - component: {fileID: 2303899933447541445}
+  - component: {fileID: 4209080368446392032}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1800,7 +1801,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.8
   m_Radius: 0.35
-  m_SlopeLimit: 45
+  m_SlopeLimit: 52
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
@@ -1817,8 +1818,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f455460beecbb654fa9bab9bc9ead73d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Player.ThirdPersonController
-  walkSpeed: 2.5
-  runSpeed: 5
+  walkSpeed: 3
+  runSpeed: 6
   rotationSmoothTime: 0.1
   gravity: -20
   cameraTransform: {fileID: 0}
@@ -1828,6 +1829,22 @@ MonoBehaviour:
   walkAnimValue: 2
   runAnimValue: 4
   speedDampTime: 0.1
+--- !u!114 &4209080368446392032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312209094245926992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28db890b41e898a46aad92a51d54ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  Name: Jett Swizzle
+  Health: 150
+  Stamina: 100
+  Mana: 100
 --- !u!1 &7588034412114854286
 GameObject:
   m_ObjectHideFlags: 0

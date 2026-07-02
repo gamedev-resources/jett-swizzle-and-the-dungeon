@@ -92,13 +92,8 @@ namespace Dungeon.Environment
                 _currentAngle = Mathf.LerpAngle(start, target, t);
                 doorPanel.localEulerAngles = new Vector3(0f, _currentAngle, 0f);
 
-                Debug.Log($"Target: {target} | CurrentAngle: {_currentAngle}");
-
-
                 yield return null;
             }
-
-            Debug.Log($"[FINAL] Target: {target} | CurrentAngle: {_currentAngle}");
 
             _currentAngle = target;
             doorPanel.localEulerAngles = new Vector3(0f, target, 0f);
