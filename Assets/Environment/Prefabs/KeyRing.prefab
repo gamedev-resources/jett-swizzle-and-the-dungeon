@@ -69,7 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Environment.PickupInteractable
   _promptText: Interact
   _interactionEnabled: 1
-  _itemData: {fileID: 0}
+  _itemData: {fileID: 11400000, guid: ee60e57219d0d9e4392fd58b62d7e79e, type: 2}
   _destroyObject: 1
   quantity: 1
 --- !u!1001 &4928376520506361001

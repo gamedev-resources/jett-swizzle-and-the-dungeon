@@ -1,12 +1,7 @@
-using System.Buffers.Text;
-using Dungeon.UI;
 using UnityEngine;
 
 namespace Dungeon.Environment
 {
-    /// <summary>
-    /// Interaction-ready world pickup for items.
-    /// </summary>
     public class PickupInteractable : Interactable
     {
         [Header("Key Item")]
@@ -19,43 +14,23 @@ namespace Dungeon.Environment
 
         public override string PromptText => _itemData == null ? "Pick up" : $"Pick up {_itemData.ItemName}";
 
-        public override bool CanInteract(Transform interactor) => InteractionEnabled && _itemData != null;
+        public override bool CanInteract(Transform interactor) => InteractionEnabled && _itemData != null && InventoryManager.Instance != null;
 
         public override void Interact(Transform interactor)
         {
             if (!CanInteract(interactor))
             {
-                Debug.LogWarning($"[KeyPickupInteractable] {name} has no ItemData assigned.");
+                Debug.LogWarning($"[KeyPickupInteractable] {name} cannot be interacted with.");
                 return;
             }
 
-            Debug.Log($"[KeyPickupInteractable] Picked up {_itemData.ItemName} x{quantity}.");
+            InventoryManager.Instance.OnItemCollected(_itemData, quantity);
+            AudioManager.Instance.Play(AudioManager.SoundId.KeyPickup, transform.position);
 
             if (_destroyObject)
             {
                 Destroy(gameObject);
             }
         }
-
-        void OnTriggerEnter(Collider other)
-        {
-            if (!other.tag.Equals("Player"))
-            {
-                return;
-            }
-
-            InteractionPromptUI.Instance.ShowAt(transform.position, PromptText);
-        }
-
-        void OnTriggerExit(Collider other)
-        {
-            if (!other.tag.Equals("Player"))
-            {
-                return;
-            }
-
-            InteractionPromptUI.Instance.Hide();
-        }
-
     }
 }

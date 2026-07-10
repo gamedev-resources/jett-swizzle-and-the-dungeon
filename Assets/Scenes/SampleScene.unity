@@ -259,6 +259,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4824570442753069435, guid: 9c04c1370c21f1f4697f60a7043a4fbe, type: 3}
   m_PrefabInstance: {fileID: 8011992}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &11427176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 11427177}
+  - component: {fileID: 11427178}
+  - component: {fileID: 11427179}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &11427177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11427176}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &11427178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11427176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d51e863d6451347b90cd0c102de31a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  _keyPickupClip: {fileID: 8300000, guid: e82dbfa2525a0e744ba78f7661c97ff2, type: 3}
+  _doorOpenClip: {fileID: 8300000, guid: f32ce1be712b3234ab63335f8d013211, type: 3}
+  _doorCloseClip: {fileID: 8300000, guid: d571b04a4a7023f4a874e298dd08018c, type: 3}
+  _footstepClips:
+  - {fileID: 8300000, guid: e1b77db866e696d4dad92a47ec86fc46, type: 3}
+  - {fileID: 8300000, guid: f84b473a798f642488d1759005a6dc91, type: 3}
+  - {fileID: 8300000, guid: 7ef5af07af36c274a84467df449d8817, type: 3}
+  - {fileID: 8300000, guid: be26d374ba59af34cb209cb7488e8f8a, type: 3}
+  - {fileID: 8300000, guid: f0ff2616366e2cb42953bd09ad9fe665, type: 3}
+  _footstepVolume: 0.4
+  _spatialBlend: 0.8
+  _minDistance: 1
+  _maxDistance: 20
+--- !u!114 &11427179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11427176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f2187b66da470429bb5d58a876ed94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
 --- !u!4 &21895224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2406513462380936221, guid: 7e3f94fb7c3f388469fd6a5ab8dbb667, type: 3}
@@ -7143,23 +7213,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8199329803937445865, guid: 724039070db853441be7d098effe00ed, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.3826856
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8199329803937445865, guid: 724039070db853441be7d098effe00ed, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -4.5474735e-13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8199329803937445865, guid: 724039070db853441be7d098effe00ed, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.92387867
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8199329803937445865, guid: 724039070db853441be7d098effe00ed, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000015051883
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8199329803937445865, guid: 724039070db853441be7d098effe00ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -135
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -9370,6 +9440,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2476967805687198356, guid: 89df991649dbede4ca8fa4662dfed74a, type: 3}
   m_PrefabInstance: {fileID: 976092787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &976191553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9166307523822081881, guid: 1db0270215009324aa2ee0f019f2097d, type: 3}
+  m_PrefabInstance: {fileID: 3992437626198466007}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &979902613
 PrefabInstance:
@@ -17032,8 +17107,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowManager
   _uiDocument: {fileID: 1097050945}
   _gameWindowTemplate: {fileID: 9197481963319205126, guid: 5287569902b3ee342865a6b78c4693a1, type: 3}
-  _dragDropStyleSheet: {fileID: 0}
-  _itemTooltipTemplate: {fileID: 0}
+  _dragDropStyleSheet: {fileID: 7433441132597879392, guid: 85465163b412d5a4d9da0e69cc9acf9c, type: 3}
+  _itemTooltipTemplate: {fileID: 9197481963319205126, guid: 79a5cf2ea7820ad4ca5f395e5577f66e, type: 3}
 --- !u!114 &1790119729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19101,6 +19176,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4282444854153442936, guid: 1db0270215009324aa2ee0f019f2097d, type: 3}
   m_PrefabInstance: {fileID: 3992437626198466007}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2003857055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976191553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e803c0f543126d94da63faf6c81ead5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Environment.PickupInteractable
+  _promptText: Interact
+  _interactionEnabled: 1
+  _itemData: {fileID: 11400000, guid: 77d66f1f35617884cb45298024d78879, type: 2}
+  _destroyObject: 1
+  quantity: 1
 --- !u!1001 &2006991518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21479,7 +21571,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9166307523822081881, guid: 1db0270215009324aa2ee0f019f2097d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2003857055}
   m_SourcePrefab: {fileID: 100100000, guid: 1db0270215009324aa2ee0f019f2097d, type: 3}
 --- !u!4 &4185520974291516870
 Transform:
@@ -22837,6 +22932,10 @@ PrefabInstance:
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 963194228}
+    - target: {fileID: 3017227263827854115, guid: 73a48b04c069ac649bf67ff2cf858f7d, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: fc7105fadeb34de459c94465814af6d2, type: 3}
     - target: {fileID: 4209080368446392032, guid: 73a48b04c069ac649bf67ff2cf858f7d, type: 3}
       propertyPath: PlayerName
       value: Jett Swizzle
@@ -23269,3 +23368,4 @@ SceneRoots:
   - {fileID: 775004762}
   - {fileID: 521843313}
   - {fileID: 401489353}
+  - {fileID: 11427177}

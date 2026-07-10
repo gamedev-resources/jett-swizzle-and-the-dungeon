@@ -66,7 +66,10 @@ namespace Dungeon.Environment
                 InteractionPromptUI.Instance.Hide();
             }
 
-            Swing(0f, closeDuration);
+            if (_currentAngle != 0f)
+            {
+                Swing(0f, closeDuration);
+            }
         }
 
         private void Swing(float target, float duration)
@@ -77,6 +80,11 @@ namespace Dungeon.Environment
             }
 
             _swingRoutine = StartCoroutine(SwingRoutine(target, duration));
+
+            if (target != 0f)
+            {
+                AudioManager.Instance.Play(AudioManager.SoundId.DoorOpen, transform.position);
+            }
         }
 
         private IEnumerator SwingRoutine(float target, float duration)
@@ -98,6 +106,11 @@ namespace Dungeon.Environment
             _currentAngle = target;
             doorPanel.localEulerAngles = new Vector3(0f, target, 0f);
             _swingRoutine = null;
+
+            if (target == 0f)
+            {
+                AudioManager.Instance.Play(AudioManager.SoundId.DoorClose, transform.position);
+            }
         }
     }
 }

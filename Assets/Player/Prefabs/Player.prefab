@@ -104,7 +104,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4537301943961496463}
-  - component: {fileID: 8524673861533399785}
   m_Layer: 0
   m_Name: Skeleton_Minion
   m_TagString: Untagged
@@ -137,28 +136,6 @@ Transform:
   - {fileID: 6478789068908407812}
   m_Father: {fileID: 8413854770708488863}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8524673861533399785
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 306140318552947637}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 74afe8cd9d101b54ca8ac7898218b1b3, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &881142369165802332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,7 +1733,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6056544817305531145}
   - component: {fileID: 1517696668220391853}
+  - component: {fileID: 3017227263827854115}
   - component: {fileID: 2303899933447541445}
+  - component: {fileID: 8290454945255491326}
   - component: {fileID: 4209080368446392032}
   m_Layer: 0
   m_Name: Player
@@ -1806,6 +1785,28 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!95 &3017227263827854115
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312209094245926992}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 88effec9eb01b6d4f8bb7f7c1927f1c0, type: 3}
+  m_Controller: {fileID: 9100000, guid: 74afe8cd9d101b54ca8ac7898218b1b3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &2303899933447541445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1818,17 +1819,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f455460beecbb654fa9bab9bc9ead73d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Player.ThirdPersonController
-  walkSpeed: 3
-  runSpeed: 6
-  rotationSmoothTime: 0.1
-  gravity: -20
-  cameraTransform: {fileID: 0}
-  modelPivot: {fileID: 7243774899962724683}
-  animator: {fileID: 8524673861533399785}
-  speedParameter: Speed
-  walkAnimValue: 2
-  runAnimValue: 4
-  speedDampTime: 0.1
+  _walkSpeed: 3
+  _runSpeed: 6
+  _rotationSmoothTime: 0.1
+  _gravity: -20
+  _cameraTransform: {fileID: 0}
+  _modelPivot: {fileID: 7243774899962724683}
+  _animator: {fileID: 0}
+  _speedParameter: Speed
+  _walkAnimValue: 2
+  _runAnimValue: 4
+  _speedDampTime: 0.1
+--- !u!114 &8290454945255491326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312209094245926992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb25d79a4849c194797567ade2bb33a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Player.PlayerInteractor
 --- !u!114 &4209080368446392032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1841,7 +1854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28db890b41e898a46aad92a51d54ba2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  Name: Jett Swizzle
+  PlayerName: Jett Swizzle
   Health: 150
   Stamina: 100
   Mana: 100

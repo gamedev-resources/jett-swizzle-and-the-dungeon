@@ -87,6 +87,7 @@ MonoBehaviour:
   defaultKeyLabel: E
   defaultPromptText: Interact
   hideOnAwake: 1
+  worldOffset: {x: 0, y: 2.2, z: 0}
 --- !u!1001 &2537645412772053134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -182,7 +183,36 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fd579f3837790041b983af9fb2018a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1140000000000000001}
+    - targetCorrespondingSourceObject: {fileID: 3245047377962470163, guid: 2fd579f3837790041b983af9fb2018a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8008548126234222746}
   m_SourcePrefab: {fileID: 100100000, guid: 2fd579f3837790041b983af9fb2018a3, type: 3}
+--- !u!1 &1026607870972103581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3245047377962470163, guid: 2fd579f3837790041b983af9fb2018a3, type: 3}
+  m_PrefabInstance: {fileID: 2537645412772053134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &8008548126234222746
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026607870972103581}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2.75, z: 0.5230284}
+  m_Center: {x: -0.8200989, y: 1.375, z: 0.033504337}
 --- !u!4 &2647340822501058405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2fd579f3837790041b983af9fb2018a3, type: 3}
@@ -270,7 +300,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Environment.DoorController
   canBeOpened: 1
   doorPanel: {fileID: 8199329803937445865}
-  prompt: {fileID: 8579587225285633194}
   openAngle: 90
   openDuration: 0.3
   closeDuration: 0.3
