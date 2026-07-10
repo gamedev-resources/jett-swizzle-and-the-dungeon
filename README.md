@@ -10,4 +10,4 @@ This repository is a living playground. Rather than spinning up a fresh project 
 
 ## Resources
 
-This project uses art assets by [Kay Lousberg](https://kaylousberg.itch.io/).
+This project uses art assets by [Kay Lousberg](https://kaylousberg.itch.io/) and [Kenney](https://kenney.nl/).
