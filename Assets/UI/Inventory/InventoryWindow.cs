@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InventoryWindow : WindowContentBuilder
+public class InventoryWindow : WindowContentBuilder, IGamePlayEventListener<ItemCollectedEvent>
 {
     private const int SLOT_COUNT = 25;
 
@@ -83,4 +83,8 @@ public class InventoryWindow : WindowContentBuilder
             }
         }
     }
+
+    public void OnGameplayEvent(ItemCollectedEvent evt) => TryReturnItem(evt.Item);
+    private void OnEnable() => GameplayEventBus.Register<ItemCollectedEvent>(this);
+    private void OnDisable() => GameplayEventBus.Unregister<ItemCollectedEvent>(this);
 }

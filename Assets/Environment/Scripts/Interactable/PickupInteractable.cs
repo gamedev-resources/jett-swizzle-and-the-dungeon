@@ -14,7 +14,7 @@ namespace Dungeon.Environment
 
         public override string PromptText => _itemData == null ? "Pick up" : $"Pick up {_itemData.ItemName}";
 
-        public override bool CanInteract(Transform interactor) => InteractionEnabled && _itemData != null && InventoryManager.Instance != null;
+        public override bool CanInteract(Transform interactor) => InteractionEnabled && _itemData != null;
 
         public override void Interact(Transform interactor)
         {
@@ -24,7 +24,7 @@ namespace Dungeon.Environment
                 return;
             }
 
-            InventoryManager.Instance.OnItemCollected(_itemData, quantity);
+            GameplayEventBus.Raise(new ItemCollectedEvent(_itemData, transform.position, quantity));
             AudioManager.Instance.Play(AudioManager.SoundId.KeyPickup, transform.position);
 
             if (_destroyObject)

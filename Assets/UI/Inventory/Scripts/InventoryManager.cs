@@ -1,23 +1,14 @@
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, IGamePlayEventListener<ItemCollectedEvent>
 {
-    public static InventoryManager Instance { get; private set; }
 
-    private void Awake()
+    public void OnGameplayEvent(ItemCollectedEvent evt)
     {
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogWarning("Multiple instances of InventoryManager found. Destroying.");
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
+        Debug.Log($"Inventory: Collected {evt.Item.ItemName} x{evt.Quantity}");
+        
     }
+    private void OnEnable() => GameplayEventBus.Register<ItemCollectedEvent>(this);
+    private void OnDisable() => GameplayEventBus.Unregister<ItemCollectedEvent>(this);
 
-    public void OnItemCollected(ItemData item, int quantity)
-    {
-        Debug.Log($"Inventory: Collected {item.ItemName} x{quantity}");
-    }
 }
