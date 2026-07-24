@@ -13,4 +13,5 @@ public class PlayerStats : MonoBehaviour
     {
         Debug.Log($"Player: {PlayerName} | Health: {Health} | Stamina: {Stamina} | Mana: {Mana}");
     }
+
 }
