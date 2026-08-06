@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_Coin
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   ItemName: Coin
-  Description: A helmet that is enchanted with poison.
-  Icon: {fileID: 21300000, guid: c20c7440993993f4d974eebb29c3a579, type: 3}
-  Category: 5
+  Description: Can be used at a vendor to purchase goods.
+  Icon: {fileID: 21300000, guid: 1308bca84c7ec5d4da26d58e0b1509f1, type: 3}
+  Category: 3
   Rarity: 0

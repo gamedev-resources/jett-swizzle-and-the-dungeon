@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 292d5b36a20074341b9cbb6eba7df999, type: 3}
   m_Name: Item_Shield
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  ItemName: Iron Shield
-  Description: A simple iron shield
-  Icon: {fileID: 21300000, guid: 2fae7df8701f47742b8a852f44a39f8f, type: 3}
+  ItemName: Skull Shield
+  Description: A simple shield with a skull on it. It'll probably block some damage...
+  Icon: {fileID: 21300000, guid: d6490f1a80bafd84e9dbfc81b5e2c3f5, type: 3}
   Category: 2
   Rarity: 2

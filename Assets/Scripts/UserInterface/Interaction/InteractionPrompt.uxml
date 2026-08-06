@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/UserInterface/Shared/GlobalVariables.uss?fileID=7433441132597879392&amp;guid=e86b5c2a622407b4281df4a5ced1f867&amp;type=3#GlobalVariables"/>
+    <Style src="project://database/Assets/Scripts/UserInterface/Interaction/InteractionPrompt.uss?fileID=7433441132597879392&amp;guid=51d11a1c35570a64eab0b9206cab145c&amp;type=3#InteractionPrompt"/>
+    <ui:VisualElement name="interaction-prompt" picking-mode="Ignore" class="interaction-prompt">
+        <ui:VisualElement name="prompt-key" class="prompt-key">
+            <ui:Label name="prompt-key-label" text="E" class="prompt-key-label"/>
+        </ui:VisualElement>
+        <ui:Label name="prompt-text" text="Interact" class="prompt-text"/>
+    </ui:VisualElement>
+</ui:UXML>

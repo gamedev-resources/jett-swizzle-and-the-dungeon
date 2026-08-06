@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13adba0779f719042ad2d528d9e481aa, type: 3}
+  m_Name: SaveProfile
+  m_EditorClassIdentifier: Assembly-CSharp::SaveProfile
+  Items:
+  - ItemData: {fileID: 11400000, guid: 21621862825bf5e45a67f8f2a1e4c478, type: 2}
+    Amount: 1
+  - ItemData: {fileID: 11400000, guid: bcd6a98942d22a94084ada45d2fab94b, type: 2}
+    Amount: 2
+  - ItemData: {fileID: 11400000, guid: 706459b71e9083e4f84036a8131d7873, type: 2}
+    Amount: 1
