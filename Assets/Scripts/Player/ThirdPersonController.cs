@@ -39,25 +39,13 @@ namespace Dungeon.Player
         [Tooltip("How quickly the animator Speed value follows its target (seconds).")]
         [SerializeField] private float _speedDampTime = 0.1f;
 
-        [Header("Debug (perf spike)")]
-        [Tooltip("Simulates a periodic CPU spike from a heavy procedural hop solve. Pin it down in the " +
-                 "CPU Profiler: LateUpdate → ResolveProceduralBoneAim.")]
-        [SerializeField] private bool _simulatePerformanceSpike = false;
-
-        [Tooltip("Iteration count for the fake solver. Trivial so the spike reads clearly as one node.")]
-        [SerializeField, Range(1000, 100000)] private int _spikeWork = 50000;
-
-        [Tooltip("Seconds between spike bursts. Set to 0 to run every frame instead.")]
-        [SerializeField] private float _spikeInterval = 3f;
-
-        [Tooltip("How many consecutive frames each spike burst lasts.")]
-        [SerializeField, Min(1)] private int _spikeFrames = 5;
-
         private CharacterController _controller;
         private PlayerControls _controls;
         private float _verticalVelocity;
         private float _turnSmoothVelocity;
+        private float _currentYaw;
         private int _speedHash;
+        private int _attackHash;
 
         /// <summary>Current horizontal (planar) speed in units/second.</summary>
         public float PlanarSpeed { get; private set; }
@@ -65,12 +53,14 @@ namespace Dungeon.Player
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
-            _animator = GetComponent<Animator>();
+            _animator = ResolveAnimator();
             _controls = new PlayerControls();
             _controls.Player.Attack.performed += OnAttack;
             _cameraTransform = ResolveCameraTransform();
             _modelPivot = ResolveModelPivot();
+            _currentYaw = _modelPivot.eulerAngles.y;
             _speedHash = Animator.StringToHash(_speedParameter);
+            _attackHash = Animator.StringToHash("Attack");
         }
 
         private void OnEnable() => _controls.Player.Enable();
@@ -80,9 +70,9 @@ namespace Dungeon.Player
         private void OnAttack(InputAction.CallbackContext context)
         {
             //TODO: Refactor this into a combat controller
-            if (context.performed && _animator != null)
+            if (_animator != null)
             {
-                _animator.SetTrigger("Attack");
+                _animator.SetTrigger(_attackHash);
             }
         }
 
@@ -103,8 +93,8 @@ namespace Dungeon.Player
 
             Vector3 move = GetHorizontalMovement(moveInput, sprinting, moving);
             
-            _verticalVelocity = ApplyGravity();
-            PlanarSpeed = new Vector3(move.x, 0f, move.z).magnitude;
+            ApplyGravity();
+            PlanarSpeed = moving ? (sprinting ? _runSpeed : _walkSpeed) : 0f;
             UpdateAnimator(PlanarSpeed, moving, sprinting);
             
             ExecuteMove(move);
@@ -116,7 +106,7 @@ namespace Dungeon.Player
             if (!moving) return Vector3.zero;
 
             Vector3 input = new Vector3(moveInput.x, 0f, moveInput.y);
-            if (input.sqrMagnitude > 1f) input.Normalize();
+            input.Normalize();
 
             Vector3 direction = CalculateMoveDirection(input);
             RotatePivot(direction);
@@ -144,20 +134,20 @@ namespace Dungeon.Player
             camRight.y = 0f;
             camForward.Normalize();
             camRight.Normalize();
-            return (camForward * input.z + camRight * input.x).normalized;
+            return camForward * input.z + camRight * input.x;
         }
 
         /// <summary>Smoothly rotates the model pivot to face the given direction.</summary>
         private void RotatePivot(Vector3 direction)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            float angle = Mathf.SmoothDampAngle(_modelPivot.eulerAngles.y, targetAngle,
+            _currentYaw = Mathf.SmoothDampAngle(_currentYaw, targetAngle,
                 ref _turnSmoothVelocity, _rotationSmoothTime);
-            _modelPivot.rotation = Quaternion.Euler(0f, angle, 0f);
+            _modelPivot.rotation = Quaternion.Euler(0f, _currentYaw, 0f);
         }
 
         /// <summary>Applies gravity and resets vertical velocity when grounded.</summary>
-        private float ApplyGravity()
+        private void ApplyGravity()
         {
             if (_controller.isGrounded && _verticalVelocity < 0f)
             {
@@ -167,7 +157,6 @@ namespace Dungeon.Player
             {
                 _verticalVelocity += _gravity * Time.deltaTime;
             }
-            return _verticalVelocity;
         }
 
         /// <summary>Sets the animator speed parameter based on movement state.</summary>
@@ -183,6 +172,22 @@ namespace Dungeon.Player
         {
             horizontalMove.y = _verticalVelocity;
             _controller.Move(horizontalMove * Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Resolves the animator, falling back to a search of this object and its children.
+        /// </summary>
+        private Animator ResolveAnimator()
+        {
+            if (_animator != null) return _animator;
+
+            var animator = GetComponentInChildren<Animator>();
+            if (animator == null)
+            {
+                Debug.LogWarning("[ThirdPersonController] No Animator found on this object or its " +
+                    "children; locomotion and attack animations will not play.", this);
+            }
+            return animator;
         }
 
         /// <summary>Resolves camera transform, falling back to the main camera.</summary>
