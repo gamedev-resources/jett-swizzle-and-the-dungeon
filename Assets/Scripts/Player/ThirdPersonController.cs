@@ -1,22 +1,18 @@
-using Dungeon.Events;
+using Dungeon.Core.Input;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Dungeon.Player
 {
     /// <summary>
     /// Camera-relative third person movement for a CharacterController.
-    /// Consumes Move, Sprint and Attack input as events from the <see cref="GameplayEventBus"/>,
-    /// raised by the single input owner rather than read from the input asset directly.
+    /// Consumes Move, Sprint and Attack as C# events from the <see cref="PlayerInputController"/>
+    /// on this same GameObject, rather than reading the input asset directly.
     /// Hold Sprint (Left Shift / gamepad left trigger) to run.
     /// Rotates a child "Pivot" transform to face the move direction, leaving the
     /// root un-rotated so the Cinemachine follow camera keeps a stable orientation.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class ThirdPersonController : MonoBehaviour,
-        IGamePlayEventListener<MoveInputEvent>,
-        IGamePlayEventListener<SprintInputEvent>,
-        IGamePlayEventListener<AttackInputEvent>
+    public class ThirdPersonController : MonoBehaviour
     {
         [Header("Movement")]
         [SerializeField] private float _walkSpeed = 2.5f;
@@ -45,6 +41,7 @@ namespace Dungeon.Player
         [SerializeField] private float _speedDampTime = 0.1f;
 
         private CharacterController _controller;
+        private PlayerInputController _input;
         private Vector2 _moveInput;
         private bool _sprintHeld;
         private float _verticalVelocity;
@@ -59,6 +56,7 @@ namespace Dungeon.Player
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
+            _input = GetComponent<PlayerInputController>();
             _animator = ResolveAnimator();
             _cameraTransform = ResolveCameraTransform();
             _modelPivot = ResolveModelPivot();
@@ -69,42 +67,47 @@ namespace Dungeon.Player
 
         private void OnEnable()
         {
-            GameplayEventBus.Register<MoveInputEvent>(this);
-            GameplayEventBus.Register<SprintInputEvent>(this);
-            GameplayEventBus.Register<AttackInputEvent>(this);
+            if (_input == null)
+            {
+                Debug.LogWarning("[ThirdPersonController] No PlayerInputController on this object; " +
+                    "the player will not respond to input.", this);
+                return;
+            }
+
+            _input.OnMove += OnMoveInput;
+            _input.OnSprint += OnSprintInput;
+            _input.OnAttack += OnAttackInput;
         }
 
         private void OnDisable()
         {
-            GameplayEventBus.Unregister<MoveInputEvent>(this);
-            GameplayEventBus.Unregister<SprintInputEvent>(this);
-            GameplayEventBus.Unregister<AttackInputEvent>(this);
+            if (_input != null)
+            {
+                _input.OnMove -= OnMoveInput;
+                _input.OnSprint -= OnSprintInput;
+                _input.OnAttack -= OnAttackInput;
+            }
 
             // Drop any held input so a re-enable starts from idle rather than a stale axis.
             _moveInput = Vector2.zero;
             _sprintHeld = false;
         }
 
-        /// <summary>Caches the latest move axis; the canceled phase carries zero, i.e. idle.</summary>
-        public void OnGameplayEvent(MoveInputEvent gameplayEvent)
+        /// <summary>Caches the latest move axis; a released stick reports zero, i.e. idle.</summary>
+        private void OnMoveInput(Vector2 value)
         {
-            _moveInput = gameplayEvent.Value;
+            _moveInput = value;
         }
 
         /// <summary>Caches the sprint hold state.</summary>
-        public void OnGameplayEvent(SprintInputEvent gameplayEvent)
+        private void OnSprintInput(bool isSprinting)
         {
-            _sprintHeld = gameplayEvent.IsSprinting;
+            _sprintHeld = isSprinting;
         }
 
         /// <summary>Triggers the attack animation on a performed attack input.</summary>
-        public void OnGameplayEvent(AttackInputEvent gameplayEvent)
+        private void OnAttackInput()
         {
-            if (gameplayEvent.Phase != InputActionPhase.Performed)
-            {
-                return;
-            }
-
             //TODO: Refactor this into a combat controller
             if (_animator != null)
             {

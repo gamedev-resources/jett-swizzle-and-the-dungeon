@@ -1,3 +1,4 @@
+using System;
 using Dungeon.Events;
 using Dungeon.Player;
 using UnityEngine;
@@ -5,32 +6,30 @@ using UnityEngine.InputSystem;
 
 namespace Dungeon.Core.Input
 {
-    /// <summary>
-    /// The single owner of the <see cref="PlayerControls"/> input asset.
-    /// Translates every raw Input System callback into a strongly-typed event on the
-    /// <see cref="GameplayEventBus"/>, so gameplay and UI systems consume input without
-    /// each allocating their own copy of the action asset.
-    /// </summary>
-    /// <remarks>
-    /// Handlers are named methods rather than lambdas so they can be unsubscribed in
-    /// <see cref="OnDisable"/>; a lambda would create a new delegate instance on every
-    /// wire-up and leak a subscription each time the component is re-enabled.
-    /// </remarks>
+
     public class PlayerInputController : MonoBehaviour
     {
+        /// <summary>
+        /// Raised with the current move axis. The canceled phase reports
+        /// <see cref="Vector2.zero"/>, so subscribers can treat it as "go idle".
+        /// </summary>
+        public event Action<Vector2> OnMove;
+
+        /// <summary>Raised with <c>true</c> when sprint is pressed and <c>false</c> on release.</summary>
+        public event Action<bool> OnSprint;
+
+        /// <summary>Raised once each time the attack action is performed.</summary>
+        public event Action OnAttack;
+
+        /// <summary>Raised once each time the interact action is performed.</summary>
+        public event Action OnInteract;
+
         /// <summary>The one and only instance of the generated input wrapper.</summary>
         private PlayerControls _controls;
 
-        /// <summary>
-        /// Allocates the input asset before any other lifecycle method runs, so
-        /// <see cref="OnEnable"/> can safely enable and wire the action maps.
-        /// </summary>
-        private void Awake()
-        {
-            _controls = new PlayerControls();
-        }
+        private void Awake() =>  _controls = new PlayerControls();
 
-        /// <summary>Enables both action maps and subscribes the event-raising handlers.</summary>
+        /// <summary>Enables both action maps and subscribes the input handlers.</summary>
         private void OnEnable()
         {
             _controls.Player.Enable();
@@ -51,88 +50,65 @@ namespace Dungeon.Core.Input
         }
 
         /// <summary>Releases the input asset to avoid leaking its unmanaged state.</summary>
-        private void OnDestroy()
-        {
-            _controls?.Dispose();
-        }
+        private void OnDestroy() => _controls?.Dispose();
 
         /// <summary>Subscribes to the gameplay actions on the <c>Player</c> map.</summary>
         private void WirePlayerActions()
         {
-            // Move listens to canceled as well so release raises a zero vector (idle).
-            _controls.Player.Move.performed += OnMove;
-            _controls.Player.Move.canceled += OnMove;
-            _controls.Player.Sprint.started += OnSprintStarted;
-            _controls.Player.Sprint.canceled += OnSprintCanceled;
-            _controls.Player.Interact.performed += OnInteract;
-            _controls.Player.Attack.performed += OnAttack;
+            // Move listens to canceled as well so release reports a zero vector (idle).
+            _controls.Player.Move.performed += HandleMove;
+            _controls.Player.Move.canceled += HandleMove;
+            _controls.Player.Sprint.started += HandleSprintStarted;
+            _controls.Player.Sprint.canceled += HandleSprintCanceled;
+            _controls.Player.Interact.performed += HandleInteract;
+            _controls.Player.Attack.performed += HandleAttack;
         }
 
         /// <summary>Unsubscribes from the gameplay actions on the <c>Player</c> map.</summary>
         private void UnwirePlayerActions()
         {
-            _controls.Player.Move.performed -= OnMove;
-            _controls.Player.Move.canceled -= OnMove;
-            _controls.Player.Sprint.started -= OnSprintStarted;
-            _controls.Player.Sprint.canceled -= OnSprintCanceled;
-            _controls.Player.Interact.performed -= OnInteract;
-            _controls.Player.Attack.performed -= OnAttack;
+            _controls.Player.Move.performed -= HandleMove;
+            _controls.Player.Move.canceled -= HandleMove;
+            _controls.Player.Sprint.started -= HandleSprintStarted;
+            _controls.Player.Sprint.canceled -= HandleSprintCanceled;
+            _controls.Player.Interact.performed -= HandleInteract;
+            _controls.Player.Attack.performed -= HandleAttack;
         }
 
         /// <summary>Subscribes to the window shortcuts on the <c>UI</c> map.</summary>
         private void WireUIActions()
         {
-            _controls.UI.ToggleInventory.performed += OnToggleInventory;
-            _controls.UI.ToggleEquipment.performed += OnToggleEquipment;
-            _controls.UI.CloseAll.performed += OnCloseAll;
+            _controls.UI.ToggleInventory.performed += HandleToggleInventory;
+            _controls.UI.ToggleEquipment.performed += HandleToggleEquipment;
+            _controls.UI.CloseAll.performed += HandleCloseAll;
         }
 
         /// <summary>Unsubscribes from the window shortcuts on the <c>UI</c> map.</summary>
         private void UnwireUIActions()
         {
-            _controls.UI.ToggleInventory.performed -= OnToggleInventory;
-            _controls.UI.ToggleEquipment.performed -= OnToggleEquipment;
-            _controls.UI.CloseAll.performed -= OnCloseAll;
+            _controls.UI.ToggleInventory.performed -= HandleToggleInventory;
+            _controls.UI.ToggleEquipment.performed -= HandleToggleEquipment;
+            _controls.UI.CloseAll.performed -= HandleCloseAll;
         }
 
-        private void OnMove(InputAction.CallbackContext context)
-        {
-            GameplayEventBus.Raise(new MoveInputEvent(context.ReadValue<Vector2>(), context.phase));
-        }
+        private void HandleMove(InputAction.CallbackContext context) => 
+            OnMove?.Invoke(context.ReadValue<Vector2>());
 
-        private void OnSprintStarted(InputAction.CallbackContext context)
-        {
-            GameplayEventBus.Raise(new SprintInputEvent(true, context.phase));
-        }
+        private void HandleSprintStarted(InputAction.CallbackContext context) => OnSprint?.Invoke(true);
 
-        private void OnSprintCanceled(InputAction.CallbackContext context)
-        {
-            GameplayEventBus.Raise(new SprintInputEvent(false, context.phase));
-        }
+        private void HandleSprintCanceled(InputAction.CallbackContext context) => OnSprint?.Invoke(false);
 
-        private void OnInteract(InputAction.CallbackContext context)
-        {
-            GameplayEventBus.Raise(new InteractInputEvent(context.phase));
-        }
+        private void HandleInteract(InputAction.CallbackContext context) => OnInteract?.Invoke();
 
-        private void OnAttack(InputAction.CallbackContext context)
-        {
-            GameplayEventBus.Raise(new AttackInputEvent(context.phase));
-        }
+        private void HandleAttack(InputAction.CallbackContext context) => OnAttack?.Invoke();
 
-        private void OnToggleInventory(InputAction.CallbackContext context)
-        {
+        private void HandleToggleInventory(InputAction.CallbackContext context) => 
             GameplayEventBus.Raise(new WindowToggleInputEvent(WindowAction.Inventory, context.phase));
-        }
 
-        private void OnToggleEquipment(InputAction.CallbackContext context)
-        {
+        private void HandleToggleEquipment(InputAction.CallbackContext context) => 
             GameplayEventBus.Raise(new WindowToggleInputEvent(WindowAction.Equipment, context.phase));
-        }
 
-        private void OnCloseAll(InputAction.CallbackContext context)
-        {
+        private void HandleCloseAll(InputAction.CallbackContext context) => 
             GameplayEventBus.Raise(new WindowToggleInputEvent(WindowAction.CloseAll, context.phase));
-        }
     }
 }

@@ -1,22 +1,41 @@
+using Dungeon.Core.Input;
 using Dungeon.Environment;
-using Dungeon.Events;
 using Dungeon.UI;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Dungeon.Player
 {
     // Tracks nearby Interactables registered by the objects themselves via trigger overlap.
     // The closest one becomes the current target. On Interact input the target's Interact() is called.
-    // Will be refactored to use the event bus later (interactable focus/unfocus events).
-    public class PlayerInteractor : MonoBehaviour, IGamePlayEventListener<InteractInputEvent>
+    // Interact input arrives as a C# event from the PlayerInputController on this same GameObject.
+    public class PlayerInteractor : MonoBehaviour
     {
         private List<Interactable> _nearby = new List<Interactable>();
         private Interactable _current;
+        private PlayerInputController _input;
 
-        private void OnEnable() => GameplayEventBus.Register<InteractInputEvent>(this);
-        private void OnDisable() => GameplayEventBus.Unregister<InteractInputEvent>(this);
+        private void Awake() => _input = GetComponent<PlayerInputController>();
+
+        private void OnEnable()
+        {
+            if (_input == null)
+            {
+                Debug.LogWarning("[PlayerInteractor] No PlayerInputController on this object; " +
+                    "interaction input will not be received.", this);
+                return;
+            }
+
+            _input.OnInteract += OnInteractInput;
+        }
+
+        private void OnDisable()
+        {
+            if (_input != null)
+            {
+                _input.OnInteract -= OnInteractInput;
+            }
+        }
 
         /// <summary>Called by <see cref="Interactable.OnTriggerEnter"/> — adds to the tracking list.</summary>
         public void RegisterInteractable(Interactable interactable)
@@ -76,13 +95,8 @@ namespace Dungeon.Player
         }
 
         /// <summary>Handles Interact input — hides prompt, runs interaction, then refreshes.</summary>
-        public void OnGameplayEvent(InteractInputEvent gameplayEvent)
+        private void OnInteractInput()
         {
-            if (gameplayEvent.Phase != InputActionPhase.Performed)
-            {
-                return;
-            }
-
             if (_current == null || !_current.CanInteract(transform))
             {
                 return;
