@@ -1,3 +1,4 @@
+using Dungeon.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,13 +6,17 @@ namespace Dungeon.Player
 {
     /// <summary>
     /// Camera-relative third person movement for a CharacterController.
-    /// Reads Move and Sprint from the Input System (PlayerControls asset).
+    /// Consumes Move, Sprint and Attack input as events from the <see cref="GameplayEventBus"/>,
+    /// raised by the single input owner rather than read from the input asset directly.
     /// Hold Sprint (Left Shift / gamepad left trigger) to run.
     /// Rotates a child "Pivot" transform to face the move direction, leaving the
     /// root un-rotated so the Cinemachine follow camera keeps a stable orientation.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class ThirdPersonController : MonoBehaviour
+    public class ThirdPersonController : MonoBehaviour,
+        IGamePlayEventListener<MoveInputEvent>,
+        IGamePlayEventListener<SprintInputEvent>,
+        IGamePlayEventListener<AttackInputEvent>
     {
         [Header("Movement")]
         [SerializeField] private float _walkSpeed = 2.5f;
@@ -40,7 +45,8 @@ namespace Dungeon.Player
         [SerializeField] private float _speedDampTime = 0.1f;
 
         private CharacterController _controller;
-        private PlayerControls _controls;
+        private Vector2 _moveInput;
+        private bool _sprintHeld;
         private float _verticalVelocity;
         private float _turnSmoothVelocity;
         private float _currentYaw;
@@ -54,8 +60,6 @@ namespace Dungeon.Player
         {
             _controller = GetComponent<CharacterController>();
             _animator = ResolveAnimator();
-            _controls = new PlayerControls();
-            _controls.Player.Attack.performed += OnAttack;
             _cameraTransform = ResolveCameraTransform();
             _modelPivot = ResolveModelPivot();
             _currentYaw = _modelPivot.eulerAngles.y;
@@ -63,12 +67,44 @@ namespace Dungeon.Player
             _attackHash = Animator.StringToHash("Attack");
         }
 
-        private void OnEnable() => _controls.Player.Enable();
-        private void OnDisable() => _controls.Player.Disable();
-        private void OnDestroy() => _controls.Dispose();
-
-        private void OnAttack(InputAction.CallbackContext context)
+        private void OnEnable()
         {
+            GameplayEventBus.Register<MoveInputEvent>(this);
+            GameplayEventBus.Register<SprintInputEvent>(this);
+            GameplayEventBus.Register<AttackInputEvent>(this);
+        }
+
+        private void OnDisable()
+        {
+            GameplayEventBus.Unregister<MoveInputEvent>(this);
+            GameplayEventBus.Unregister<SprintInputEvent>(this);
+            GameplayEventBus.Unregister<AttackInputEvent>(this);
+
+            // Drop any held input so a re-enable starts from idle rather than a stale axis.
+            _moveInput = Vector2.zero;
+            _sprintHeld = false;
+        }
+
+        /// <summary>Caches the latest move axis; the canceled phase carries zero, i.e. idle.</summary>
+        public void OnGameplayEvent(MoveInputEvent gameplayEvent)
+        {
+            _moveInput = gameplayEvent.Value;
+        }
+
+        /// <summary>Caches the sprint hold state.</summary>
+        public void OnGameplayEvent(SprintInputEvent gameplayEvent)
+        {
+            _sprintHeld = gameplayEvent.IsSprinting;
+        }
+
+        /// <summary>Triggers the attack animation on a performed attack input.</summary>
+        public void OnGameplayEvent(AttackInputEvent gameplayEvent)
+        {
+            if (gameplayEvent.Phase != InputActionPhase.Performed)
+            {
+                return;
+            }
+
             //TODO: Refactor this into a combat controller
             if (_animator != null)
             {
@@ -88,14 +124,13 @@ namespace Dungeon.Player
 
         private void Update()
         {
-            (Vector2 moveInput, bool sprinting) = ReadInput();
-            bool moving = moveInput.sqrMagnitude > 0.01f;
+            bool moving = _moveInput.sqrMagnitude > 0.01f;
 
-            Vector3 move = GetHorizontalMovement(moveInput, sprinting, moving);
+            Vector3 move = GetHorizontalMovement(_moveInput, _sprintHeld, moving);
             
             ApplyGravity();
-            PlanarSpeed = moving ? (sprinting ? _runSpeed : _walkSpeed) : 0f;
-            UpdateAnimator(PlanarSpeed, moving, sprinting);
+            PlanarSpeed = moving ? (_sprintHeld ? _runSpeed : _walkSpeed) : 0f;
+            UpdateAnimator(PlanarSpeed, moving, _sprintHeld);
             
             ExecuteMove(move);
         }
@@ -113,14 +148,6 @@ namespace Dungeon.Player
 
             float speed = sprinting ? _runSpeed : _walkSpeed;
             return direction * speed;
-        }
-
-        /// <summary>Reads move input and sprint state from the Input System.</summary>
-        private (Vector2, bool) ReadInput()
-        {
-            Vector2 moveInput = _controls.Player.Move.ReadValue<Vector2>();
-            bool sprinting = _controls.Player.Sprint.IsPressed();
-            return (moveInput, sprinting);
         }
 
         /// <summary>

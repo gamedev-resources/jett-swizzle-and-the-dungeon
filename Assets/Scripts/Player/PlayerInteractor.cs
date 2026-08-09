@@ -1,4 +1,5 @@
 using Dungeon.Environment;
+using Dungeon.Events;
 using Dungeon.UI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,30 +10,13 @@ namespace Dungeon.Player
     // Tracks nearby Interactables registered by the objects themselves via trigger overlap.
     // The closest one becomes the current target. On Interact input the target's Interact() is called.
     // Will be refactored to use the event bus later (interactable focus/unfocus events).
-    public class PlayerInteractor : MonoBehaviour
+    public class PlayerInteractor : MonoBehaviour, IGamePlayEventListener<InteractInputEvent>
     {
-        private PlayerControls _controls;
         private List<Interactable> _nearby = new List<Interactable>();
         private Interactable _current;
 
-        private void Awake()
-        {
-            _controls = new PlayerControls();
-        }
-
-        private void OnEnable()
-        {
-            _controls.Player.Enable();
-            _controls.Player.Interact.performed += OnInteract;
-        }
-
-        private void OnDisable()
-        {
-            _controls.Player.Interact.performed -= OnInteract;
-            _controls.Player.Disable();
-        }
-
-        private void OnDestroy() => _controls.Dispose();
+        private void OnEnable() => GameplayEventBus.Register<InteractInputEvent>(this);
+        private void OnDisable() => GameplayEventBus.Unregister<InteractInputEvent>(this);
 
         /// <summary>Called by <see cref="Interactable.OnTriggerEnter"/> — adds to the tracking list.</summary>
         public void RegisterInteractable(Interactable interactable)
@@ -92,8 +76,13 @@ namespace Dungeon.Player
         }
 
         /// <summary>Handles Interact input — hides prompt, runs interaction, then refreshes.</summary>
-        private void OnInteract(InputAction.CallbackContext context)
+        public void OnGameplayEvent(InteractInputEvent gameplayEvent)
         {
+            if (gameplayEvent.Phase != InputActionPhase.Performed)
+            {
+                return;
+            }
+
             if (_current == null || !_current.CanInteract(transform))
             {
                 return;

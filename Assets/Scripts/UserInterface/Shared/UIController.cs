@@ -1,30 +1,17 @@
-using Dungeon.Player;
+using Dungeon.Events;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
-/// Handles keyboard input to toggle individual windows or close all windows.
-/// Reads input from the <c>UI</c> action map of the shared <see cref="PlayerControls"/> asset,
-/// keeping all bindings in one place alongside the <c>Player</c> map.
+/// Creates the gameplay windows and toggles them in response to window shortcuts.
+/// Input arrives as <see cref="WindowToggleInputEvent"/> on the <see cref="GameplayEventBus"/>,
+/// raised by the single input owner, so this controller neither owns nor polls an input asset.
 /// </summary>
-public class UIController : MonoBehaviour
+public class UIController : MonoBehaviour, IGamePlayEventListener<WindowToggleInputEvent>
 {
     [SerializeField] private WindowManager _windowManager;
     [SerializeField] private InventoryWindow _inventoryWindow;
     [SerializeField] private EquipmentWindow _equipmentWindow;
-
-    /// <summary>
-    /// Shared input-action wrapper; owns the lifetime of the underlying asset instance.
-    /// </summary>
-    private PlayerControls _controls;
-
-    /// <summary>
-    /// Allocates the <see cref="PlayerControls"/> instance before any other lifecycle
-    /// methods run, so <see cref="OnEnable"/> can safely enable the action map.
-    /// </summary>
-    private void Awake()
-    {
-        _controls = new PlayerControls();
-    }
 
     /// <summary>
     /// Creates the default inventory and equipment windows at their initial positions.
@@ -50,49 +37,38 @@ public class UIController : MonoBehaviour
         window.Hide();
     }
 
-    /// <summary>
-    /// Enables the <c>UI</c> action map so its actions begin listening for input.
-    /// </summary>
-    private void OnEnable()
-    {
-        _controls.UI.Enable();
-    }
+    /// <summary>Subscribes to window shortcut input.</summary>
+    private void OnEnable() => GameplayEventBus.Register<WindowToggleInputEvent>(this);
+
+    /// <summary>Unsubscribes from window shortcut input.</summary>
+    private void OnDisable() => GameplayEventBus.Unregister<WindowToggleInputEvent>(this);
 
     /// <summary>
-    /// Disables the <c>UI</c> action map to stop listening for input while inactive.
+    /// Toggles the requested window, or closes everything for
+    /// <see cref="WindowAction.CloseAll"/>.
     /// </summary>
-    private void OnDisable()
+    public void OnGameplayEvent(WindowToggleInputEvent gameplayEvent)
     {
-        _controls.UI.Disable();
-    }
-
-    /// <summary>
-    /// Releases the <see cref="PlayerControls"/> asset to avoid memory leaks.
-    /// </summary>
-    private void OnDestroy()
-    {
-        _controls.Dispose();
-    }
-
-    /// <summary>
-    /// Polls the <c>UI</c> action map each frame and toggles the corresponding window
-    /// or closes all windows when the mapped key is pressed.
-    /// </summary>
-    private void Update()
-    {
-        if (_controls.UI.ToggleInventory.WasPressedThisFrame())
+        if (gameplayEvent.Phase != InputActionPhase.Performed)
         {
-            _windowManager.ToggleWindow("inventory");
+            return;
         }
-        if (_controls.UI.ToggleEquipment.WasPressedThisFrame())
+
+        switch (gameplayEvent.Action)
         {
-            _windowManager.ToggleWindow("equipment");
-        }
-        if (_controls.UI.CloseAll.WasPressedThisFrame())
-        {
-            // Don't interrupt an active drag — let the user release the item first.
-            if (ItemDragManipulator.IsDragging) return;
-            _windowManager.CloseAllWindows();
+            case WindowAction.Inventory:
+                _windowManager.ToggleWindow("inventory");
+                break;
+
+            case WindowAction.Equipment:
+                _windowManager.ToggleWindow("equipment");
+                break;
+
+            case WindowAction.CloseAll:
+                // Don't interrupt an active drag — let the user release the item first.
+                if (ItemDragManipulator.IsDragging) return;
+                _windowManager.CloseAllWindows();
+                break;
         }
     }
 }
