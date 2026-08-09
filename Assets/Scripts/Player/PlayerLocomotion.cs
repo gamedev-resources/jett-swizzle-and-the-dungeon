@@ -5,14 +5,16 @@ namespace Dungeon.Player
 {
     /// <summary>
     /// Camera-relative third person movement for a CharacterController.
-    /// Consumes Move, Sprint and Attack as C# events from the <see cref="PlayerInputController"/>
+    /// Consumes Move and Sprint as C# events from the <see cref="PlayerInputController"/>
     /// on this same GameObject, rather than reading the input asset directly.
     /// Hold Sprint (Left Shift / gamepad left trigger) to run.
     /// Rotates a child "Pivot" transform to face the move direction, leaving the
     /// root un-rotated so the Cinemachine follow camera keeps a stable orientation.
+    /// Animation is not owned here: the resulting locomotion state is forwarded to
+    /// <see cref="PlayerAnimationDriver"/> each frame.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class ThirdPersonController : MonoBehaviour
+    public class PlayerLocomotion : MonoBehaviour
     {
         [Header("Movement")]
         [SerializeField] private float _walkSpeed = 2.5f;
@@ -28,27 +30,14 @@ namespace Dungeon.Player
                  "leaving the root (and the follow camera bound to it) un-rotated. Defaults to a child named 'Pivot'.")]
         [SerializeField] private Transform _modelPivot;
 
-        [Header("Animation")]
-        [Tooltip("Optional Animator driven by movement. Auto-found in children if not set.")]
-        [SerializeField] private Animator _animator;
-        [Tooltip("Float parameter blended in the locomotion tree (Idle=0, Walk, Run).")]
-        [SerializeField] private string _speedParameter = "Speed";
-        [Tooltip("Animator Speed value used while walking (matches the walk blend threshold).")]
-        [SerializeField] private float _walkAnimValue = 2f;
-        [Tooltip("Animator Speed value used while running (matches the run blend threshold).")]
-        [SerializeField] private float _runAnimValue = 4f;
-        [Tooltip("How quickly the animator Speed value follows its target (seconds).")]
-        [SerializeField] private float _speedDampTime = 0.1f;
-
         private CharacterController _controller;
         private PlayerInputController _input;
+        private PlayerAnimationDriver _animationDriver;
         private Vector2 _moveInput;
         private bool _sprintHeld;
         private float _verticalVelocity;
         private float _turnSmoothVelocity;
         private float _currentYaw;
-        private int _speedHash;
-        private int _attackHash;
 
         /// <summary>Current horizontal (planar) speed in units/second.</summary>
         public float PlanarSpeed { get; private set; }
@@ -57,26 +46,23 @@ namespace Dungeon.Player
         {
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<PlayerInputController>();
-            _animator = ResolveAnimator();
+            _animationDriver = ResolveAnimationDriver();
             _cameraTransform = ResolveCameraTransform();
             _modelPivot = ResolveModelPivot();
             _currentYaw = _modelPivot.eulerAngles.y;
-            _speedHash = Animator.StringToHash(_speedParameter);
-            _attackHash = Animator.StringToHash("Attack");
         }
 
         private void OnEnable()
         {
             if (_input == null)
             {
-                Debug.LogWarning("[ThirdPersonController] No PlayerInputController on this object; " +
+                Debug.LogWarning("[PlayerLocomotion] No PlayerInputController on this object; " +
                     "the player will not respond to input.", this);
                 return;
             }
 
             _input.OnMove += OnMoveInput;
             _input.OnSprint += OnSprintInput;
-            _input.OnAttack += OnAttackInput;
         }
 
         private void OnDisable()
@@ -85,7 +71,6 @@ namespace Dungeon.Player
             {
                 _input.OnMove -= OnMoveInput;
                 _input.OnSprint -= OnSprintInput;
-                _input.OnAttack -= OnAttackInput;
             }
 
             // Drop any held input so a re-enable starts from idle rather than a stale axis.
@@ -105,39 +90,18 @@ namespace Dungeon.Player
             _sprintHeld = isSprinting;
         }
 
-        /// <summary>Triggers the attack animation on a performed attack input.</summary>
-        private void OnAttackInput()
-        {
-            //TODO: Refactor this into a combat controller
-            if (_animator != null)
-            {
-                _animator.SetTrigger(_attackHash);
-            }
-        }
-
-        public void PlayFootStep()
-        {
-            if (AudioManager.Instance == null || PlanarSpeed < 0.1f)
-            {
-                return;
-            }
-
-            AudioManager.Instance.Play(AudioManager.SoundId.Footstep, transform.position);
-        }
-
         private void Update()
         {
             bool moving = _moveInput.sqrMagnitude > 0.01f;
 
             Vector3 move = GetHorizontalMovement(_moveInput, _sprintHeld, moving);
-            
+
             ApplyGravity();
             PlanarSpeed = moving ? (_sprintHeld ? _runSpeed : _walkSpeed) : 0f;
-            UpdateAnimator(PlanarSpeed, moving, _sprintHeld);
-            
+            _animationDriver?.SetLocomotion(moving, _sprintHeld);
+
             ExecuteMove(move);
         }
-
 
         private Vector3 GetHorizontalMovement(Vector2 moveInput, bool sprinting, bool moving)
         {
@@ -189,14 +153,6 @@ namespace Dungeon.Player
             }
         }
 
-        /// <summary>Sets the animator speed parameter based on movement state.</summary>
-        private void UpdateAnimator(float planarSpeed, bool moving, bool sprinting)
-        {
-            if (_animator == null) return;
-            float animTarget = moving ? (sprinting ? _runAnimValue : _walkAnimValue) : 0f;
-            _animator.SetFloat(_speedHash, animTarget, _speedDampTime, Time.deltaTime);
-        }
-
         /// <summary>Applies vertical velocity and executes the controller move.</summary>
         private void ExecuteMove(Vector3 horizontalMove)
         {
@@ -205,19 +161,18 @@ namespace Dungeon.Player
         }
 
         /// <summary>
-        /// Resolves the animator, falling back to a search of this object and its children.
+        /// Resolves the animation driver on this object. Movement still runs without one,
+        /// so a missing driver is a warning rather than an error.
         /// </summary>
-        private Animator ResolveAnimator()
+        private PlayerAnimationDriver ResolveAnimationDriver()
         {
-            if (_animator != null) return _animator;
-
-            var animator = GetComponentInChildren<Animator>();
-            if (animator == null)
+            var driver = GetComponent<PlayerAnimationDriver>();
+            if (driver == null)
             {
-                Debug.LogWarning("[ThirdPersonController] No Animator found on this object or its " +
-                    "children; locomotion and attack animations will not play.", this);
+                Debug.LogWarning("[PlayerLocomotion] No PlayerAnimationDriver on this object; " +
+                    "the player will move but locomotion animations will not blend.", this);
             }
-            return animator;
+            return driver;
         }
 
         /// <summary>Resolves camera transform, falling back to the main camera.</summary>
@@ -237,7 +192,7 @@ namespace Dungeon.Player
             _modelPivot = transform.Find("Pivot");
             if (_modelPivot != null) return _modelPivot;
             _modelPivot = transform;
-            Debug.LogWarning("[ThirdPersonController] No 'Pivot' child found; rotating the root " +
+            Debug.LogWarning("[PlayerLocomotion] No 'Pivot' child found; rotating the root " +
                 "instead, which makes the follow camera spin with the player.", this);
             return _modelPivot;
         }
