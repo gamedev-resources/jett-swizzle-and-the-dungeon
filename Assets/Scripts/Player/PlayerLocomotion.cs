@@ -5,13 +5,6 @@ namespace Dungeon.Player
 {
     /// <summary>
     /// Camera-relative third person movement for a CharacterController.
-    /// Consumes Move and Sprint as C# events from the <see cref="PlayerInputController"/>
-    /// on this same GameObject, rather than reading the input asset directly.
-    /// Hold Sprint (Left Shift / gamepad left trigger) to run.
-    /// Rotates a child "Pivot" transform to face the move direction, leaving the
-    /// root un-rotated so the Cinemachine follow camera keeps a stable orientation.
-    /// Animation is not owned here: the resulting locomotion state is forwarded to
-    /// <see cref="PlayerAnimationDriver"/> each frame.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class PlayerLocomotion : MonoBehaviour
@@ -32,7 +25,7 @@ namespace Dungeon.Player
 
         private CharacterController _controller;
         private PlayerInputController _input;
-        private PlayerAnimationDriver _animationDriver;
+        private PlayerAnimationController _animationDriver;
         private Vector2 _moveInput;
         private bool _sprintHeld;
         private float _verticalVelocity;
@@ -79,16 +72,10 @@ namespace Dungeon.Player
         }
 
         /// <summary>Caches the latest move axis; a released stick reports zero, i.e. idle.</summary>
-        private void OnMoveInput(Vector2 value)
-        {
-            _moveInput = value;
-        }
+        private void OnMoveInput(Vector2 value) => _moveInput = value;
 
         /// <summary>Caches the sprint hold state.</summary>
-        private void OnSprintInput(bool isSprinting)
-        {
-            _sprintHeld = isSprinting;
-        }
+        private void OnSprintInput(bool isSprinting) => _sprintHeld = isSprinting;
 
         private void Update()
         {
@@ -164,9 +151,9 @@ namespace Dungeon.Player
         /// Resolves the animation driver on this object. Movement still runs without one,
         /// so a missing driver is a warning rather than an error.
         /// </summary>
-        private PlayerAnimationDriver ResolveAnimationDriver()
+        private PlayerAnimationController ResolveAnimationDriver()
         {
-            var driver = GetComponent<PlayerAnimationDriver>();
+            var driver = GetComponent<PlayerAnimationController>();
             if (driver == null)
             {
                 Debug.LogWarning("[PlayerLocomotion] No PlayerAnimationDriver on this object; " +

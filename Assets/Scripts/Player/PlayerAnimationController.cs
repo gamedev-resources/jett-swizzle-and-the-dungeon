@@ -8,7 +8,7 @@ namespace Dungeon.Player
     /// parameters that maps to, so no other script caches an animator hash.
     /// It deliberately does not read input: callers drive it.
     /// </summary>
-    public class PlayerAnimationDriver : MonoBehaviour
+    public class PlayerAnimationController : MonoBehaviour
     {
         [Header("Animation")]
         [Tooltip("Optional Animator driven by movement. Auto-found in children if not set.")]
