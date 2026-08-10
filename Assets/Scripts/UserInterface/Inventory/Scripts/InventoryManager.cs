@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Dungeon.Events;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour, IGamePlayEventListener<InventoryChangedEvent>

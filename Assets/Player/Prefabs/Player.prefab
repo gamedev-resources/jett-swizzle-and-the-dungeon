@@ -1738,6 +1738,10 @@ GameObject:
   - component: {fileID: 2303899933447541445}
   - component: {fileID: 8290454945255491326}
   - component: {fileID: 4209080368446392032}
+  - component: {fileID: 5849738166141560619}
+  - component: {fileID: 7224050953283314737}
+  - component: {fileID: -8873666611193427964}
+  - component: {fileID: -7224455610253872890}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1826,11 +1830,6 @@ MonoBehaviour:
   _gravity: -20
   _cameraTransform: {fileID: 0}
   _modelPivot: {fileID: 7243774899962724683}
-  _animator: {fileID: 0}
-  _speedParameter: Speed
-  _walkAnimValue: 2
-  _runAnimValue: 4
-  _speedDampTime: 0.1
 --- !u!114 &8290454945255491326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1859,6 +1858,59 @@ MonoBehaviour:
   Health: 150
   Stamina: 100
   Mana: 100
+--- !u!114 &5849738166141560619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312209094245926992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afcaeac8092e0e74bb1dc78d138c7371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Core.Input.PlayerInputController
+--- !u!114 &7224050953283314737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312209094245926992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ccc6d2a8d13ab449fd9b4baabfc426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Player.PlayerAnimationDriver
+  _animator: {fileID: 0}
+  _speedParameter: Speed
+  _walkAnimValue: 2
+  _runAnimValue: 4
+  _speedDampTime: 0.1
+--- !u!114 &-8873666611193427964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312209094245926992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd032bef2f41dec40b263f7b072122ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Player.PlayerCombat
+--- !u!114 &-7224455610253872890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312209094245926992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aab6218d6feadd84cb1e6f06bca41387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Player.PlayerFootstepAudio
 --- !u!1 &7588034412114854286
 GameObject:
   m_ObjectHideFlags: 0

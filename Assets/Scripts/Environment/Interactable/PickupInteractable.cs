@@ -1,3 +1,4 @@
+using Dungeon.Events;
 using UnityEngine;
 
 namespace Dungeon.Environment

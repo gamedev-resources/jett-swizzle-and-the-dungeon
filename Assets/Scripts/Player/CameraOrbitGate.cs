@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
@@ -17,36 +18,52 @@ namespace Dungeon.Player
         [SerializeField] private string[] gatedAxisNames = { "Look Orbit X", "Look Orbit Y" };
 
         private CinemachineInputAxisController _input;
-        private bool _verifiedMatch;
+        private int[] _gatedIndices;
+        private bool _resolved;
+        private bool _warnedNoMatch;
 
         private void Awake() => _input = GetComponent<CinemachineInputAxisController>();
 
         private void Update()
         {
+            if (!_resolved)
+                ResolveGatedIndices();
+
             var mouse = Mouse.current;
             bool orbiting = mouse != null && mouse.rightButton.isPressed;
 
             var controllers = _input.Controllers;
-            bool matchedAny = false;
+            var gatedIndices = _gatedIndices;
+            for (int i = 0; i < gatedIndices.Length; i++)
+                controllers[gatedIndices[i]].Enabled = orbiting;
+        }
+
+        // Resolves the indices of the gated axis controllers exactly once (the
+        // Controllers list may still be empty at Awake), so Update never searches
+        // by name or allocates per frame.
+        private void ResolveGatedIndices()
+        {
+            var controllers = _input.Controllers;
+            var matches = new List<int>(controllers.Count);
             for (int i = 0; i < controllers.Count; i++)
             {
                 if (System.Array.IndexOf(gatedAxisNames, controllers[i].Name) >= 0)
-                {
-                    controllers[i].Enabled = orbiting;
-                    matchedAny = true;
-                }
+                    matches.Add(i);
             }
+
+            _gatedIndices = matches.ToArray();
+            _resolved = true;
 
             // Guard against a silent failure where no axis name matches: without this,
             // the gate would never disable the axes and the camera would orbit freely.
-            if (!matchedAny && !_verifiedMatch && controllers.Count > 0)
+            // Fires at most once for a given misconfiguration.
+            if (_gatedIndices.Length == 0 && controllers.Count > 0 && !_warnedNoMatch)
             {
                 Debug.LogWarning("[CameraOrbitGate] No input-axis controller matched gatedAxisNames " +
                     $"[{string.Join(", ", gatedAxisNames)}]. RMB gating is inactive. " +
                     "Check the axis names on the CinemachineInputAxisController.", this);
+                _warnedNoMatch = true;
             }
-            if (matchedAny)
-                _verifiedMatch = true;
         }
     }
 }

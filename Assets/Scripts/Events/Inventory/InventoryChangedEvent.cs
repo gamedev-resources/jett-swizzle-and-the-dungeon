@@ -1,22 +1,25 @@
 using UnityEngine;
 
-public class InventoryChangedEvent : IGameplayEvent
+namespace Dungeon.Events
 {
-    public enum ChangeEvents
+    public class InventoryChangedEvent : IGameplayEvent
     {
-        Added,
-        Removed
-    }
-    public ChangeEvents ChangeEvent {get; }
-    public ItemInstance Item { get; }
-    public int Quantity { get; }
-    public Vector3 Position { get; }
+        public enum ChangeEvents
+        {
+            Added,
+            Removed
+        }
+        public ChangeEvents ChangeEvent {get; }
+        public ItemInstance Item { get; }
+        public int Quantity { get; }
+        public Vector3 Position { get; }
 
-    public InventoryChangedEvent(ChangeEvents changeEvent, ItemInstance item, Vector3 position, int quantity = 1)
-    {
-        ChangeEvent = changeEvent;
-        Item = item;
-        Quantity = quantity;
-        Position = position;
+        public InventoryChangedEvent(ChangeEvents changeEvent, ItemInstance item, Vector3 position, int quantity = 1)
+        {
+            ChangeEvent = changeEvent;
+            Item = item;
+            Quantity = quantity;
+            Position = position;
+        }
     }
 }
