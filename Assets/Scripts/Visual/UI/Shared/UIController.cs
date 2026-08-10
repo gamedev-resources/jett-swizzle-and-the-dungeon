@@ -1,98 +1,108 @@
-using Dungeon.Player;
-using UnityEngine;
+﻿using UnityEngine;
+using Dungeon.Visual.UI.Inventory;
+using Dungeon.Visual.UI.Equipment;
+using Dungeon.Core.Input;
 
-/// <summary>
-/// Handles keyboard input to toggle individual windows or close all windows.
-/// Reads input from the <c>UI</c> action map of the shared <see cref="PlayerControls"/> asset,
-/// keeping all bindings in one place alongside the <c>Player</c> map.
-/// </summary>
-public class UIController : MonoBehaviour
+namespace Dungeon.Visual.UI.Shared
 {
-    [SerializeField] private WindowManager _windowManager;
-    [SerializeField] private InventoryWindow _inventoryWindow;
-    [SerializeField] private EquipmentWindow _equipmentWindow;
-
+    
+    
+    
     /// <summary>
-    /// Shared input-action wrapper; owns the lifetime of the underlying asset instance.
+    /// Handles keyboard input to toggle individual windows or close all windows.
+    /// Reads input from the <c>UI</c> action map of the shared <see cref="PlayerControls"/> asset,
+    /// keeping all bindings in one place alongside the <c>Player</c> map.
     /// </summary>
-    private PlayerControls _controls;
-
-    /// <summary>
-    /// Allocates the <see cref="PlayerControls"/> instance before any other lifecycle
-    /// methods run, so <see cref="OnEnable"/> can safely enable the action map.
-    /// </summary>
-    private void Awake()
+    public class UIController : MonoBehaviour
     {
-        _controls = new PlayerControls();
-    }
-
-    /// <summary>
-    /// Creates the default inventory and equipment windows at their initial positions.
-    /// </summary>
-    private void Start()
-    {
-        _windowManager.InitializeSharedOverlays();
-
-        InitializeWindow("inventory", "INVENTORY", new Vector2(50, 50), _inventoryWindow);
-        InitializeWindow("equipment", "EQUIPMENT", new Vector2(200, 100), _equipmentWindow);
-    }
-
-    private void InitializeWindow(string id, string title, Vector2 defaultPosition, WindowContentBuilder builder)
-    {
-        if (builder == null)
+        [SerializeField] private WindowManager _windowManager;
+        [SerializeField] private InventoryWindow _inventoryWindow;
+        [SerializeField] private EquipmentWindow _equipmentWindow;
+    
+        /// <summary>
+        /// Shared input-action wrapper; owns the lifetime of the underlying asset instance.
+        /// </summary>
+        private PlayerControls _controls;
+    
+        /// <summary>
+        /// Allocates the <see cref="PlayerControls"/> instance before any other lifecycle
+        /// methods run, so <see cref="OnEnable"/> can safely enable the action map.
+        /// </summary>
+        private void Awake()
         {
-            Debug.LogError($"No window builder assigned for '{id}'.");
-            return;
+            _controls = new PlayerControls();
         }
-
-        var window = _windowManager.GetOrCreateWindow(id, title, defaultPosition);
-        builder.Build(window);
-        window.Hide();
-    }
-
-    /// <summary>
-    /// Enables the <c>UI</c> action map so its actions begin listening for input.
-    /// </summary>
-    private void OnEnable()
-    {
-        _controls.UI.Enable();
-    }
-
-    /// <summary>
-    /// Disables the <c>UI</c> action map to stop listening for input while inactive.
-    /// </summary>
-    private void OnDisable()
-    {
-        _controls.UI.Disable();
-    }
-
-    /// <summary>
-    /// Releases the <see cref="PlayerControls"/> asset to avoid memory leaks.
-    /// </summary>
-    private void OnDestroy()
-    {
-        _controls.Dispose();
-    }
-
-    /// <summary>
-    /// Polls the <c>UI</c> action map each frame and toggles the corresponding window
-    /// or closes all windows when the mapped key is pressed.
-    /// </summary>
-    private void Update()
-    {
-        if (_controls.UI.ToggleInventory.WasPressedThisFrame())
+    
+        /// <summary>
+        /// Creates the default inventory and equipment windows at their initial positions.
+        /// </summary>
+        private void Start()
         {
-            _windowManager.ToggleWindow("inventory");
+            _windowManager.InitializeSharedOverlays();
+    
+            InitializeWindow("inventory", "INVENTORY", new Vector2(50, 50), _inventoryWindow);
+            InitializeWindow("equipment", "EQUIPMENT", new Vector2(200, 100), _equipmentWindow);
         }
-        if (_controls.UI.ToggleEquipment.WasPressedThisFrame())
+    
+        private void InitializeWindow(string id, string title, Vector2 defaultPosition, WindowContentBuilder builder)
         {
-            _windowManager.ToggleWindow("equipment");
+            if (builder == null)
+            {
+                Debug.LogError($"No window builder assigned for '{id}'.");
+                return;
+            }
+    
+            var window = _windowManager.GetOrCreateWindow(id, title, defaultPosition);
+            builder.Build(window);
+            window.Hide();
         }
-        if (_controls.UI.CloseAll.WasPressedThisFrame())
+    
+        /// <summary>
+        /// Enables the <c>UI</c> action map so its actions begin listening for input.
+        /// </summary>
+        private void OnEnable()
         {
-            // Don't interrupt an active drag — let the user release the item first.
-            if (ItemDragManipulator.IsDragging) return;
-            _windowManager.CloseAllWindows();
+            _controls.UI.Enable();
+        }
+    
+        /// <summary>
+        /// Disables the <c>UI</c> action map to stop listening for input while inactive.
+        /// </summary>
+        private void OnDisable()
+        {
+            _controls.UI.Disable();
+        }
+    
+        /// <summary>
+        /// Releases the <see cref="PlayerControls"/> asset to avoid memory leaks.
+        /// </summary>
+        private void OnDestroy()
+        {
+            _controls.Dispose();
+        }
+    
+        /// <summary>
+        /// Polls the <c>UI</c> action map each frame and toggles the corresponding window
+        /// or closes all windows when the mapped key is pressed.
+        /// </summary>
+        private void Update()
+        {
+            if (_controls.UI.ToggleInventory.WasPressedThisFrame())
+            {
+                _windowManager.ToggleWindow("inventory");
+            }
+            if (_controls.UI.ToggleEquipment.WasPressedThisFrame())
+            {
+                _windowManager.ToggleWindow("equipment");
+            }
+            if (_controls.UI.CloseAll.WasPressedThisFrame())
+            {
+                // Don't interrupt an active drag — let the user release the item first.
+                if (ItemDragManipulator.IsDragging) return;
+                _windowManager.CloseAllWindows();
+            }
         }
     }
+    
 }
+

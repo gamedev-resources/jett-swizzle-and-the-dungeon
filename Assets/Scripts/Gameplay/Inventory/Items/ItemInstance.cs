@@ -1,15 +1,23 @@
-using System;
+﻿using System;
 using UnityEngine;
+using Dungeon.Config.Items;
 
-[Serializable]
-public class ItemInstance
+namespace Dungeon.Gameplay.Inventory.Items
 {
-    [SerializeField] private ItemData _data;
-
-    public ItemData Data => _data;
-
-    protected ItemInstance(ItemData data)
+    
+    
+    
+    [Serializable]
+    public class ItemInstance
     {
-        _data = data;
+        [SerializeField] private ItemData _data;
+    
+        public ItemData Data => _data;
+    
+        protected ItemInstance(ItemData data)
+        {
+            _data = data;
+        }
     }
 }
+

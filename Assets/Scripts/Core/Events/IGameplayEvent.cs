@@ -1,1 +1,8 @@
-public interface IGameplayEvent { }
+﻿
+
+namespace Dungeon.Core.Events
+{
+    public interface IGameplayEvent { }
+}
+
+

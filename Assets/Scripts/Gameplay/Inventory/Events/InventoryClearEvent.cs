@@ -1,12 +1,19 @@
-using UnityEngine;
+﻿using UnityEngine;
+using Dungeon.Core.Events;
 
-/// <summary>
-/// This is a cheat code event only
-/// </summary>
-public class InventoryClearEvent : IGameplayEvent
+namespace Dungeon.Gameplay.Inventory.Events
 {
-    public InventoryClearEvent()
+    
+    
+    /// <summary>
+    /// This is a cheat code event only
+    /// </summary>
+    public class InventoryClearEvent : IGameplayEvent
     {
-
+        public InventoryClearEvent()
+        {
+    
+        }
     }
 }
+

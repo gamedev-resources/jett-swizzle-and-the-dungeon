@@ -1,11 +1,18 @@
-public enum ItemCategory
+﻿
+
+namespace Dungeon.Config.Items
 {
-    Head,
-    Weapon,
-    Shield,
-    Consumable,
-    Accessory,
-    Utility,
-    Key,
-    Currency
+    public enum ItemCategory
+    {
+        Head,
+        Weapon,
+        Shield,
+        Consumable,
+        Accessory,
+        Utility,
+        Key,
+        Currency
+    }
 }
+
+

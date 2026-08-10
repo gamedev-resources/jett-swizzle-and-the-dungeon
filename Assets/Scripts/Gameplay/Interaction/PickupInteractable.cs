@@ -1,6 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
+using Dungeon.Config.Save;
+using Dungeon.Config.Items;
+using Dungeon.Gameplay.Inventory.Items;
+using Dungeon.Core.Events;
+using Dungeon.Gameplay.Inventory.Events;
+using Dungeon.Core.Audio;
 
-namespace Dungeon.Environment
+namespace Dungeon.Gameplay.Interaction
 {
     public class PickupInteractable : Interactable
     {
@@ -37,3 +43,5 @@ namespace Dungeon.Environment
         }
     }
 }
+
+

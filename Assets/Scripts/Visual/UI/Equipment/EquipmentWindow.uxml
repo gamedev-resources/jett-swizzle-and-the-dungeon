@@ -1,8 +1,8 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Shared/GlobalVariables.uss?fileID=7433441132597879392&amp;guid=e86b5c2a622407b4281df4a5ced1f867&amp;type=3#GlobalVariables"/>
-    <Style src="project://database/Assets/UI/Shared/GameWindow.uss?fileID=7433441132597879392&amp;guid=a6eac6cd21ae8d748ac9ca7995c689d5&amp;type=3#GameWindow"/>
-    <Style src="project://database/Assets/UI/Shared/ItemSlot.uss?fileID=7433441132597879392&amp;guid=3c6377e2310fece4b96d64307a9ff8da&amp;type=3#ItemSlot"/>
-    <Style src="project://database/Assets/UI/Equipment/EquipmentWindow.uss?fileID=7433441132597879392&amp;guid=544da120d5992614ab054c382d9dade0&amp;type=3#EquipmentWindow"/>
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/Visual/UI/Shared/GlobalVariables.uss?fileID=7433441132597879392&amp;guid=e86b5c2a622407b4281df4a5ced1f867&amp;type=3#GlobalVariables"/>
+    <Style src="project://database/Assets/Scripts/Visual/UI/Shared/GameWindow.uss?fileID=7433441132597879392&amp;guid=a6eac6cd21ae8d748ac9ca7995c689d5&amp;type=3#GameWindow"/>
+    <Style src="project://database/Assets/Scripts/Visual/UI/Shared/ItemSlot.uss?fileID=7433441132597879392&amp;guid=3c6377e2310fece4b96d64307a9ff8da&amp;type=3#ItemSlot"/>
+    <Style src="project://database/Assets/Scripts/Visual/UI/Equipment/EquipmentWindow.uss?fileID=7433441132597879392&amp;guid=544da120d5992614ab054c382d9dade0&amp;type=3#EquipmentWindow"/>
     <ui:VisualElement name="equipment-content" class="equipment-content">
         <ui:VisualElement name="equipment-layout" class="equipment-layout">
             <ui:VisualElement name="left-column" class="equipment-column side-column">

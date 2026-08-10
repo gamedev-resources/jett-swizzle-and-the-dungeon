@@ -1,8 +1,9 @@
-using System.Collections;
-using Dungeon.UI;
+﻿using System.Collections;
 using UnityEngine;
+using Dungeon.Visual.UI.Interaction;
+using Dungeon.Core.Audio;
 
-namespace Dungeon.Environment
+namespace Dungeon.Gameplay.Environment
 {
     public class DoorController : MonoBehaviour
     {
@@ -114,3 +115,5 @@ namespace Dungeon.Environment
         }
     }
 }
+
+

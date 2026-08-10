@@ -1,14 +1,22 @@
-using UnityEngine;
+﻿using UnityEngine;
+using Dungeon.Config.Items;
 
-public class ConsumableItem : ItemInstance
+namespace Dungeon.Gameplay.Inventory.Items
 {
-    [SerializeField]
-    private int _usesRemaining;
-
-    public int UsesRemaining => _usesRemaining;
-
-    public ConsumableItem(ItemData data) : base(data)
+    
+    
+    public class ConsumableItem : ItemInstance
     {
-        _usesRemaining = 2;
+        [SerializeField]
+        private int _usesRemaining;
+    
+        public int UsesRemaining => _usesRemaining;
+    
+        public ConsumableItem(ItemData data) : base(data)
+        {
+            _usesRemaining = 2;
+        }
     }
+    
 }
+

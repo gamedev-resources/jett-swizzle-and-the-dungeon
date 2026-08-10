@@ -1,6 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class WindowContentBuilder : MonoBehaviour
+namespace Dungeon.Visual.UI.Shared
 {
-    public abstract void Build(GameWindow window);
+    
+    
+    public abstract class WindowContentBuilder : MonoBehaviour
+    {
+        public abstract void Build(GameWindow window);
+    }
+    
 }
+

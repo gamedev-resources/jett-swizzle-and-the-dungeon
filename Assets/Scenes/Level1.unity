@@ -9418,6 +9418,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2021797475}
     m_Modifications:
+    - target: {fileID: 1149592599722900661, guid: 9c04c1370c21f1f4697f60a7043a4fbe, type: 3}
+      propertyPath: _intensityAmplitude
+      value: 3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2553760991845236291, guid: 9c04c1370c21f1f4697f60a7043a4fbe, type: 3}
       propertyPath: m_Name
       value: Torch

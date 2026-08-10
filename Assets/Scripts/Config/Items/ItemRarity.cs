@@ -1,7 +1,14 @@
-public enum ItemRarity
+﻿
+
+namespace Dungeon.Config.Items
 {
-    Common,
-    Uncommon,
-    Rare,
-    Epic
+    public enum ItemRarity
+    {
+        Common,
+        Uncommon,
+        Rare,
+        Epic
+    }
 }
+
+

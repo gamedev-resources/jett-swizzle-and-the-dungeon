@@ -1,7 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using Dungeon.Core.Audio;
+using Dungeon.Core.Input;
 
-namespace Dungeon.Player
+namespace Dungeon.Gameplay.Player
 {
     /// <summary>
     /// Camera-relative third person movement for a CharacterController.
@@ -208,3 +210,5 @@ namespace Dungeon.Player
         }
     }
 }
+
+

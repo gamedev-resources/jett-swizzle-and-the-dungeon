@@ -1,4 +1,11 @@
-public interface IGamePlayEventListener<T> where T : IGameplayEvent
+﻿
+
+namespace Dungeon.Core.Events
 {
-    void OnGameplayEvent(T gameplayEvent);
+    public interface IGamePlayEventListener<T> where T : IGameplayEvent
+    {
+        void OnGameplayEvent(T gameplayEvent);
+    }
 }
+
+

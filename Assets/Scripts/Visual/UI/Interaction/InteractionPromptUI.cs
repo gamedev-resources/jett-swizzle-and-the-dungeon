@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Dungeon.UI
+namespace Dungeon.Visual.UI.Interaction
 {
     /// <summary>
     /// Singleton world-space interaction prompt rendered by UI Toolkit.
@@ -129,3 +129,5 @@ namespace Dungeon.UI
         }
     }
 }
+
+
