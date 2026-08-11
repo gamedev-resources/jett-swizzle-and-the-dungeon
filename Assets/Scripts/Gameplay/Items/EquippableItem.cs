@@ -1,14 +1,18 @@
+using Dungeon.Config.Items;
 using UnityEngine;
 
-public class EquippableItem : ItemInstance
+namespace Dungeon.Gameplay.Items
 {
-    [SerializeField]
-    private float _durability;
-
-    public float Durability => _durability;
-
-    public EquippableItem(ItemData data) : base(data)
+    public class EquippableItem : ItemInstance
     {
-        _durability = 1f;
+        [SerializeField]
+        private float _durability;
+
+        public float Durability => _durability;
+
+        public EquippableItem(ItemData data) : base(data)
+        {
+            _durability = 1f;
+        }
     }
 }

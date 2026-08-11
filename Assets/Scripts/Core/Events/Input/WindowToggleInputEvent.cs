@@ -1,6 +1,7 @@
+using Dungeon.Core.Events;
 using UnityEngine.InputSystem;
 
-namespace Dungeon.Events
+namespace Dungeon.Core.Events.Input
 {
     /// <summary>Which UI window request an input produced.</summary>
     public enum WindowAction

@@ -1,6 +1,7 @@
+using Dungeon.Core.Audio;
 using UnityEngine;
 
-namespace Dungeon.Player
+namespace Dungeon.Gameplay.Player
 {
     /// <summary>
     /// Plays footstep audio from Animation Events on the walk/run clips.

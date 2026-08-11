@@ -1,17 +1,20 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerStats : MonoBehaviour
+namespace Dungeon.Gameplay.Player
 {
-    [FormerlySerializedAs("Name")]
-    public string PlayerName;
-    public float Health;
-    public float Stamina;
-    public float Mana;
-
-    private void Start()
+    public class PlayerStats : MonoBehaviour
     {
-        Debug.Log($"Player: {PlayerName} | Health: {Health} | Stamina: {Stamina} | Mana: {Mana}");
-    }
+        [FormerlySerializedAs("Name")]
+        public string PlayerName;
+        public float Health;
+        public float Stamina;
+        public float Mana;
 
+        private void Start()
+        {
+            Debug.Log($"Player: {PlayerName} | Health: {Health} | Stamina: {Stamina} | Mana: {Mana}");
+        }
+
+    }
 }

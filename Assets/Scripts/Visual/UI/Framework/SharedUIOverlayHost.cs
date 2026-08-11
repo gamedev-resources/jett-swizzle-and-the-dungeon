@@ -1,59 +1,64 @@
+using Dungeon.Visual.UI.Common;
+using Dungeon.Visual.UI.Inventory;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
-public sealed class SharedUIOverlayHost
+namespace Dungeon.Visual.UI.Framework
 {
-    private readonly VisualElement _panelRoot;
-    private readonly StyleSheet _dragDropStyleSheet;
-    private readonly VisualTreeAsset _itemTooltipTemplate;
-    private bool _isInitialized;
-
-    public SharedUIOverlayHost(VisualElement panelRoot,StyleSheet dragDropStyleSheet, VisualTreeAsset itemTooltipTemplate)
+    public sealed class SharedUIOverlayHost
     {
-        _panelRoot = panelRoot;
-        _dragDropStyleSheet = dragDropStyleSheet;
-        _itemTooltipTemplate = itemTooltipTemplate;
-    }
+        private readonly VisualElement _panelRoot;
+        private readonly StyleSheet _dragDropStyleSheet;
+        private readonly VisualTreeAsset _itemTooltipTemplate;
+        private bool _isInitialized;
 
-    public void Initialize()
-    {
-        if (_isInitialized)
+        public SharedUIOverlayHost(VisualElement panelRoot,StyleSheet dragDropStyleSheet, VisualTreeAsset itemTooltipTemplate)
         {
-            return;
+            _panelRoot = panelRoot;
+            _dragDropStyleSheet = dragDropStyleSheet;
+            _itemTooltipTemplate = itemTooltipTemplate;
         }
 
-        if (_dragDropStyleSheet != null && !HasStyleSheet(_panelRoot, _dragDropStyleSheet))
+        public void Initialize()
         {
-            _panelRoot.styleSheets.Add(_dragDropStyleSheet);
-        }
-
-        ItemDragManipulator.InitGhost(_panelRoot, null);
-
-        if (_itemTooltipTemplate == null)
-        {
-            Debug.LogError("Item Tooltip Template is not assigned on the WindowManager.");
-        }
-        else if (ItemTooltipManipulator.Tooltip == null)
-        {
-            var tooltip = new ItemTooltip(_itemTooltipTemplate);
-            _panelRoot.Add(tooltip);
-            ItemTooltipManipulator.Tooltip = tooltip;
-        }
-
-        _isInitialized = true;
-    }
-
-    private static bool HasStyleSheet(VisualElement element, StyleSheet styleSheet)
-    {
-        for (int i = 0; i < element.styleSheets.count; i++)
-        {
-            if (element.styleSheets[i] == styleSheet)
+            if (_isInitialized)
             {
-                return true;
+                return;
             }
+
+            if (_dragDropStyleSheet != null && !HasStyleSheet(_panelRoot, _dragDropStyleSheet))
+            {
+                _panelRoot.styleSheets.Add(_dragDropStyleSheet);
+            }
+
+            ItemDragManipulator.InitGhost(_panelRoot, null);
+
+            if (_itemTooltipTemplate == null)
+            {
+                Debug.LogError("Item Tooltip Template is not assigned on the WindowManager.");
+            }
+            else if (ItemTooltipManipulator.Tooltip == null)
+            {
+                var tooltip = new ItemTooltip(_itemTooltipTemplate);
+                _panelRoot.Add(tooltip);
+                ItemTooltipManipulator.Tooltip = tooltip;
+            }
+
+            _isInitialized = true;
         }
 
-        return false;
+        private static bool HasStyleSheet(VisualElement element, StyleSheet styleSheet)
+        {
+            for (int i = 0; i < element.styleSheets.count; i++)
+            {
+                if (element.styleSheets[i] == styleSheet)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

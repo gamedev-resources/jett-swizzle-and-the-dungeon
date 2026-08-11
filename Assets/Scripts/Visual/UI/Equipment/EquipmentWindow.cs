@@ -1,60 +1,64 @@
+using Dungeon.Visual.UI.Framework;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class EquipmentWindow : WindowContentBuilder
+namespace Dungeon.Visual.UI.Equipment
 {
-    private static readonly string[] SLOT_NAMES =
+    public class EquipmentWindow : WindowContentBuilder
     {
-        "slot-head", "slot-weapon", "slot-shield",
-        "slot-potion", "slot-accessory-1", "slot-utility"
-    };
-
-    [Header("Templates")]
-    [SerializeField] private VisualTreeAsset _equipmentWindowTemplate;
-    [SerializeField] private VisualTreeAsset _itemSlotTemplate;
-
-    [Header("Layout")]
-    [SerializeField] private float _windowWidth = 520f;
-
-    [Header("Preview")]
-    [SerializeField] private Transform _previewCharacter;
-
-    public override void Build(GameWindow window)
-    {
-        if (_equipmentWindowTemplate == null || _itemSlotTemplate == null)
+        private static readonly string[] SLOT_NAMES =
         {
-            Debug.LogError("Equipment Window Template or Item Slot Template is not assigned.");
-            return;
-        }
+            "slot-head", "slot-weapon", "slot-shield",
+            "slot-potion", "slot-accessory-1", "slot-utility"
+        };
 
-        var width = _windowWidth > 0 ? _windowWidth : 520f;
+        [Header("Templates")]
+        [SerializeField] private VisualTreeAsset _equipmentWindowTemplate;
+        [SerializeField] private VisualTreeAsset _itemSlotTemplate;
 
-        window.Root.style.width = width;
-        window.Root.style.height = StyleKeyword.Auto;
-        window.ContentArea.Clear();
+        [Header("Layout")]
+        [SerializeField] private float _windowWidth = 520f;
 
-        var content = _equipmentWindowTemplate.Instantiate().ExtractRoot("equipment-content");
-        if (content == null)
+        [Header("Preview")]
+        [SerializeField] private Transform _previewCharacter;
+
+        public override void Build(GameWindow window)
         {
-            return;
-        }
+            if (_equipmentWindowTemplate == null || _itemSlotTemplate == null)
+            {
+                Debug.LogError("Equipment Window Template or Item Slot Template is not assigned.");
+                return;
+            }
 
-        // The equipment slots are authored as EquipmentSlot elements in the UXML,
-        // so we just hand each one the shared ItemSlot template to build its visual.
-        foreach (var slotName in SLOT_NAMES)
-        {
-            var slot = content.Q<EquipmentSlot>(slotName);
-            if (slot == null) continue;
+            var width = _windowWidth > 0 ? _windowWidth : 520f;
 
-            slot.Build(_itemSlotTemplate);
-        }
+            window.Root.style.width = width;
+            window.Root.style.height = StyleKeyword.Auto;
+            window.ContentArea.Clear();
 
-        window.ContentArea.Add(content);
+            var content = _equipmentWindowTemplate.Instantiate().ExtractRoot("equipment-content");
+            if (content == null)
+            {
+                return;
+            }
 
-        var previewArea = content.Q<VisualElement>("preview-area");
-        if (_previewCharacter != null && previewArea != null)
-        {
-            previewArea.AddManipulator(new PreviewRotateManipulator(previewArea, _previewCharacter));
+            // The equipment slots are authored as EquipmentSlot elements in the UXML,
+            // so we just hand each one the shared ItemSlot template to build its visual.
+            foreach (var slotName in SLOT_NAMES)
+            {
+                var slot = content.Q<EquipmentSlot>(slotName);
+                if (slot == null) continue;
+
+                slot.Build(_itemSlotTemplate);
+            }
+
+            window.ContentArea.Add(content);
+
+            var previewArea = content.Q<VisualElement>("preview-area");
+            if (_previewCharacter != null && previewArea != null)
+            {
+                previewArea.AddManipulator(new PreviewRotateManipulator(previewArea, _previewCharacter));
+            }
         }
     }
 }

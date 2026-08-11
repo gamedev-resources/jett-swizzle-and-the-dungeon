@@ -1,7 +1,7 @@
-using Dungeon.Player;
+using Dungeon.Gameplay.Player;
 using UnityEngine;
 
-namespace Dungeon.Environment
+namespace Dungeon.Gameplay.Interaction
 {
     public abstract class Interactable : MonoBehaviour
     {

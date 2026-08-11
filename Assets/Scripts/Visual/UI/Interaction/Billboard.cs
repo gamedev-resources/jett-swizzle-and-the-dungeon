@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dungeon.UI
+namespace Dungeon.Visual.UI.Interaction
 {
     /// <summary>
     /// Rotates this GameObject each frame so it faces the active camera.

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dungeon.Player
+namespace Dungeon.Visual.CameraRig
 {
     /// <summary>
     /// Hides upper-floor geometry while the player is on a lower floor by toggling a

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Dungeon.Events
+namespace Dungeon.Core.Events
 {
     /// <summary>
     /// A lightweight gameplay event bus.

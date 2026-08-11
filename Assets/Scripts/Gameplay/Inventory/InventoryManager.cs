@@ -1,28 +1,33 @@
 using System.Collections.Generic;
-using Dungeon.Events;
+using Dungeon.Core.Events;
+using Dungeon.Core.Events.Inventory;
+using Dungeon.Gameplay.Items;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour, IGamePlayEventListener<InventoryChangedEvent>
+namespace Dungeon.Gameplay.Inventory
 {
-    [SerializeReference]
-    public List<ItemInstance> items = new();
-
-    public void OnGameplayEvent(InventoryChangedEvent evt)
+    public class InventoryManager : MonoBehaviour, IGamePlayEventListener<InventoryChangedEvent>
     {
-        switch (evt.ChangeEvent)
+        [SerializeReference]
+        public List<ItemInstance> items = new();
+
+        public void OnGameplayEvent(InventoryChangedEvent evt)
         {
-            case InventoryChangedEvent.ChangeEvents.Added:
-                items.Add(evt.Item);
-                break;
+            switch (evt.ChangeEvent)
+            {
+                case InventoryChangedEvent.ChangeEvents.Added:
+                    items.Add(evt.Item);
+                    break;
 
-            case InventoryChangedEvent.ChangeEvents.Removed:
-                items.Remove(evt.Item);
-                break;
+                case InventoryChangedEvent.ChangeEvents.Removed:
+                    items.Remove(evt.Item);
+                    break;
+            }
+
+            Debug.Log($"Inventory Change: {evt.Item.Data.ItemName} x{evt.Quantity} was {evt.ChangeEvent}");
         }
+        private void OnEnable() => GameplayEventBus.Register<InventoryChangedEvent>(this);
+        private void OnDisable() => GameplayEventBus.Unregister<InventoryChangedEvent>(this);
 
-        Debug.Log($"Inventory Change: {evt.Item.Data.ItemName} x{evt.Quantity} was {evt.ChangeEvent}");
     }
-    private void OnEnable() => GameplayEventBus.Register<InventoryChangedEvent>(this);
-    private void OnDisable() => GameplayEventBus.Unregister<InventoryChangedEvent>(this);
-
 }

@@ -1,10 +1,10 @@
 using Dungeon.Core.Input;
-using Dungeon.Environment;
-using Dungeon.UI;
+using Dungeon.Gameplay.Interaction;
+using Dungeon.Visual.UI.Interaction;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Dungeon.Player
+namespace Dungeon.Gameplay.Player
 {
     // Tracks nearby Interactables registered by the objects themselves via trigger overlap.
     // The closest one becomes the current target. On Interact input the target's Interact() is called.

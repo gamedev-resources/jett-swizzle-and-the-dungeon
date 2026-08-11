@@ -1,6 +1,7 @@
+using Dungeon.Core.Events;
 using UnityEngine;
 
-namespace Dungeon.Events
+namespace Dungeon.Core.Events.Inventory
 {
     /// <summary>
     /// This is a cheat code event only

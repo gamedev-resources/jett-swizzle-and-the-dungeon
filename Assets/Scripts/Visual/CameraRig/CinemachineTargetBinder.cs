@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 
-namespace Dungeon.Player
+namespace Dungeon.Visual.CameraRig
 {
     /// <summary>
     /// Auto-assigns a CinemachineCamera's Tracking/LookAt targets to a tagged

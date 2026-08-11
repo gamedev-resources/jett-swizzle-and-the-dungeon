@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
+using Dungeon.Config.Items;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SaveProfile", menuName = "Game Data/Save Profile")]
-public class SaveProfile : ScriptableObject
+namespace Dungeon.Config.Profiles
 {
-    public List<Item> Items;
-
-    [Serializable]
-    public struct Item
+    [CreateAssetMenu(fileName = "SaveProfile", menuName = "Game Data/Save Profile")]
+    public class SaveProfile : ScriptableObject
     {
-        public ItemData ItemData;
-        public int Amount;
+        public List<Item> Items;
+
+        [Serializable]
+        public struct Item
+        {
+            public ItemData ItemData;
+            public int Amount;
+        }
     }
 }

@@ -1,28 +1,31 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public static class VisualElementExtensions
+namespace Dungeon.Visual.UI.Framework
 {
-    /// <summary>
-    /// Finds a named child element, transfers all stylesheets from this
-    /// container to it, and returns it ready for reparenting.
-    /// Typically called on a TemplateContainer returned by Instantiate().
-    /// </summary>
-    public static VisualElement ExtractRoot(this VisualElement container, string rootName)
+    public static class VisualElementExtensions
     {
-        var root = container.Q<VisualElement>(rootName);
-
-        if (root == null)
+        /// <summary>
+        /// Finds a named child element, transfers all stylesheets from this
+        /// container to it, and returns it ready for reparenting.
+        /// Typically called on a TemplateContainer returned by Instantiate().
+        /// </summary>
+        public static VisualElement ExtractRoot(this VisualElement container, string rootName)
         {
-            Debug.LogError($"ExtractRoot: element '{rootName}' not found in container.");
-            return null;
-        }
+            var root = container.Q<VisualElement>(rootName);
 
-        for (int i = 0; i < container.styleSheets.count; i++)
-        {
-            root.styleSheets.Add(container.styleSheets[i]);
-        }
+            if (root == null)
+            {
+                Debug.LogError($"ExtractRoot: element '{rootName}' not found in container.");
+                return null;
+            }
 
-        return root;
+            for (int i = 0; i < container.styleSheets.count; i++)
+            {
+                root.styleSheets.Add(container.styleSheets[i]);
+            }
+
+            return root;
+        }
     }
 }

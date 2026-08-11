@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public abstract class WindowContentBuilder : MonoBehaviour
+namespace Dungeon.Visual.UI.Framework
 {
-    public abstract void Build(GameWindow window);
+    public abstract class WindowContentBuilder : MonoBehaviour
+    {
+        public abstract void Build(GameWindow window);
+    }
 }

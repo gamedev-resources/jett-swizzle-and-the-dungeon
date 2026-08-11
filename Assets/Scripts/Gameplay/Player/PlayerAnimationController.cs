@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Dungeon.Player
+namespace Dungeon.Gameplay.Player
 {
     /// <summary>
     /// Sole owner of the player Animator. Other player components describe *what*

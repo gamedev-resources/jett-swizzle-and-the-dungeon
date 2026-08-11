@@ -1,6 +1,8 @@
+using Dungeon.Core.Events;
+using Dungeon.Gameplay.Items;
 using UnityEngine;
 
-namespace Dungeon.Events
+namespace Dungeon.Core.Events.Inventory
 {
     public class InventoryChangedEvent : IGameplayEvent
     {

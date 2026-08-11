@@ -1,7 +1,7 @@
 using Dungeon.Core.Input;
 using UnityEngine;
 
-namespace Dungeon.Player
+namespace Dungeon.Gameplay.Player
 {
     /// <summary>
     /// Owns the player's offensive actions. Today that is only "swing on attack input",

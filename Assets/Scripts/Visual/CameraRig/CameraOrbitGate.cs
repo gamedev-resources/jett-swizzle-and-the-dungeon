@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 
-namespace Dungeon.Player
+namespace Dungeon.Visual.CameraRig
 {
     /// <summary>
     /// Gates the Cinemachine orbital input so the camera only orbits while the
