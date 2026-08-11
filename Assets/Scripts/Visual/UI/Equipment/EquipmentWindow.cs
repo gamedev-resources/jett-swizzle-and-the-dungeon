@@ -1,0 +1,64 @@
+using Dungeon.Visual.UI.Framework;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace Dungeon.Visual.UI.Equipment
+{
+    public class EquipmentWindow : WindowContentBuilder
+    {
+        private static readonly string[] SLOT_NAMES =
+        {
+            "slot-head", "slot-weapon", "slot-shield",
+            "slot-potion", "slot-accessory-1", "slot-utility"
+        };
+
+        [Header("Templates")]
+        [SerializeField] private VisualTreeAsset _equipmentWindowTemplate;
+        [SerializeField] private VisualTreeAsset _itemSlotTemplate;
+
+        [Header("Layout")]
+        [SerializeField] private float _windowWidth = 520f;
+
+        [Header("Preview")]
+        [SerializeField] private Transform _previewCharacter;
+
+        public override void Build(GameWindow window)
+        {
+            if (_equipmentWindowTemplate == null || _itemSlotTemplate == null)
+            {
+                Debug.LogError("Equipment Window Template or Item Slot Template is not assigned.");
+                return;
+            }
+
+            var width = _windowWidth > 0 ? _windowWidth : 520f;
+
+            window.Root.style.width = width;
+            window.Root.style.height = StyleKeyword.Auto;
+            window.ContentArea.Clear();
+
+            var content = _equipmentWindowTemplate.Instantiate().ExtractRoot("equipment-content");
+            if (content == null)
+            {
+                return;
+            }
+
+            // The equipment slots are authored as EquipmentSlot elements in the UXML,
+            // so we just hand each one the shared ItemSlot template to build its visual.
+            foreach (var slotName in SLOT_NAMES)
+            {
+                var slot = content.Q<EquipmentSlot>(slotName);
+                if (slot == null) continue;
+
+                slot.Build(_itemSlotTemplate);
+            }
+
+            window.ContentArea.Add(content);
+
+            var previewArea = content.Q<VisualElement>("preview-area");
+            if (_previewCharacter != null && previewArea != null)
+            {
+                previewArea.AddManipulator(new PreviewRotateManipulator(previewArea, _previewCharacter));
+            }
+        }
+    }
+}

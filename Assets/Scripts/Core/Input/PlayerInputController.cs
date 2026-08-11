@@ -1,5 +1,6 @@
 using System;
-using Dungeon.Events;
+using Dungeon.Core.Events;
+using Dungeon.Core.Events.Input;
 using Dungeon.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
