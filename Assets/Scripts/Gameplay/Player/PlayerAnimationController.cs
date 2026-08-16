@@ -1,3 +1,5 @@
+using Dungeon.Core.Events;
+using Dungeon.Core.Events.Combat;
 using UnityEngine;
 
 namespace Dungeon.Gameplay.Player
@@ -8,7 +10,7 @@ namespace Dungeon.Gameplay.Player
     /// parameters that maps to, so no other script caches an animator hash.
     /// It deliberately does not read input: callers drive it.
     /// </summary>
-    public class PlayerAnimationController : MonoBehaviour
+    public class PlayerAnimationController : MonoBehaviour, IGamePlayEventListener<AttackHitEvent>
     {
         [Header("Animation")]
         [Tooltip("Optional Animator driven by movement. Auto-found in children if not set.")]
@@ -24,13 +26,18 @@ namespace Dungeon.Gameplay.Player
 
         private int _speedHash;
         private int _attackHash;
+        private int _hitHash;
 
         private void Awake()
         {
             _animator = ResolveAnimator();
             _speedHash = Animator.StringToHash(_speedParameter);
             _attackHash = Animator.StringToHash("Attack");
+            _hitHash = Animator.StringToHash("IsHit");
         }
+
+        void OnEnable() => GameplayEventBus.Register<AttackHitEvent>(this);
+        void OnDisable() => GameplayEventBus.Unregister<AttackHitEvent>(this);
 
         /// <summary>
         /// Blends the locomotion tree towards idle, walk or run.
@@ -50,6 +57,13 @@ namespace Dungeon.Gameplay.Player
             _animator.SetTrigger(_attackHash);
         }
 
+                /// <summary>Fires the one-shot attack animation.</summary>
+        public void TriggerHit()
+        {
+            if (_animator == null) return;
+            _animator.SetTrigger(_hitHash);
+        }
+
         /// <summary>
         /// Resolves the animator, falling back to a search of this object and its children.
         /// </summary>
@@ -64,6 +78,14 @@ namespace Dungeon.Gameplay.Player
                     "children; locomotion and attack animations will not play.", this);
             }
             return animator;
+        }
+
+        public void OnGameplayEvent(AttackHitEvent gameplayEvent)
+        {
+            if (gameplayEvent.Target == transform)
+            {
+                TriggerHit();
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Dungeon.Gameplay.Environment.Traps
             _spawnArrow = false;
             _arrow.SetActive(true);
 
-            while (_arrow.activeSelf)
+            while (_arrow.activeSelf && elapsed < travelDuration)
             {
                 elapsed += Time.deltaTime;
 
@@ -56,14 +56,12 @@ namespace Dungeon.Gameplay.Environment.Traps
 
                 await Awaitable.NextFrameAsync();
 
-                if (t >= 1f)
-                {
-                    ResetArrow();
-                    await Awaitable.WaitForSecondsAsync(3f);
-                    _spawnArrow = true;
-                }
             }
 
+            // Arrow finished its travel OR was disabled by a hit — reset and respawn.
+            ResetArrow();
+            await Awaitable.WaitForSecondsAsync(3f);
+            _spawnArrow = true;
         }
 
         private void ResetArrow()
