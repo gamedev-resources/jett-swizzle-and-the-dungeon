@@ -1882,7 +1882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ccc6d2a8d13ab449fd9b4baabfc426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dungeon.Player.PlayerAnimationDriver
-  _animator: {fileID: 0}
+  _animator: {fileID: 3017227263827854115}
   _speedParameter: Speed
   _walkAnimValue: 2
   _runAnimValue: 4
