@@ -10,7 +10,7 @@ namespace Dungeon.Gameplay.Player
     /// parameters that maps to, so no other script caches an animator hash.
     /// It deliberately does not read input: callers drive it.
     /// </summary>
-    public class PlayerAnimationController : MonoBehaviour, IGamePlayEventListener<AttackHitEvent>
+    public class PlayerAnimationController : MonoBehaviour, IGamePlayEventListener<AttackHitEvent>, IGamePlayEventListener<HealthChangedEvent>
     {
         [Header("Animation")]
         [Tooltip("Optional Animator driven by movement. Auto-found in children if not set.")]
@@ -27,6 +27,7 @@ namespace Dungeon.Gameplay.Player
         private int _speedHash;
         private int _attackHash;
         private int _hitHash;
+        private int _dieHash;
 
         private void Awake()
         {
@@ -34,10 +35,20 @@ namespace Dungeon.Gameplay.Player
             _speedHash = Animator.StringToHash(_speedParameter);
             _attackHash = Animator.StringToHash("Attack");
             _hitHash = Animator.StringToHash("IsHit");
+            _dieHash = Animator.StringToHash("Die");
         }
 
-        void OnEnable() => GameplayEventBus.Register<AttackHitEvent>(this);
-        void OnDisable() => GameplayEventBus.Unregister<AttackHitEvent>(this);
+        void OnEnable()
+        {
+            GameplayEventBus.Register<AttackHitEvent>(this);
+            GameplayEventBus.Register<HealthChangedEvent>(this);
+        }
+
+        void OnDisable()
+        {
+            GameplayEventBus.Unregister<AttackHitEvent>(this);
+            GameplayEventBus.Unregister<HealthChangedEvent>(this);
+        }
 
         /// <summary>
         /// Blends the locomotion tree towards idle, walk or run.
@@ -85,6 +96,21 @@ namespace Dungeon.Gameplay.Player
             if (gameplayEvent.Target == transform)
             {
                 TriggerHit();
+            }
+        }
+
+        /// <summary>
+        /// Plays the death animation when this player's health is depleted.
+        /// Ignored for events raised by other entities (same guard as the hit handler).
+        /// </summary>
+        public void OnGameplayEvent(HealthChangedEvent gameplayEvent)
+        {
+            if (gameplayEvent.IsDead && gameplayEvent.Source == transform)
+            {
+                if (_animator != null)
+                {
+                    _animator.SetTrigger(_dieHash);
+                }
             }
         }
     }
