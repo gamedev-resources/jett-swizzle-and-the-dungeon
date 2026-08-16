@@ -11,13 +11,13 @@ namespace Dungeon.Core.Events
         public float MaxHealth {get; }
         public bool IsDead {get; }
 
-        public HealthChangedEvent(Transform source, float previousHealth, float newHealth, float maxHealth, bool isDead)
+        public HealthChangedEvent(Transform source, float previousHealth, float newHealth, float maxHealth)
         {
             Source = source;
             PreviousHealth = previousHealth;
             NewHealth = newHealth;
             MaxHealth = maxHealth;
-            IsDead = isDead;
+            IsDead = newHealth <= 0;
         }
         
     }

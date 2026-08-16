@@ -32,7 +32,7 @@ namespace Dungeon.Gameplay.Player
         {
             float previousHealth = Health;
             Health = Mathf.Clamp(next, 0f, MaxHealth);
-            GameplayEventBus.Raise(new HealthChangedEvent(transform, previousHealth, Health, MaxHealth, Health <= 0f));
+            GameplayEventBus.Raise(new HealthChangedEvent(transform, previousHealth, Health, MaxHealth));
         }
 
     }

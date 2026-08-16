@@ -28,6 +28,7 @@ namespace Dungeon.Gameplay.Player
         private int _attackHash;
         private int _hitHash;
         private int _dieHash;
+        private int _respawnHash;
 
         private void Awake()
         {
@@ -36,6 +37,7 @@ namespace Dungeon.Gameplay.Player
             _attackHash = Animator.StringToHash("Attack");
             _hitHash = Animator.StringToHash("IsHit");
             _dieHash = Animator.StringToHash("Die");
+            _respawnHash = Animator.StringToHash("Spawn");
         }
 
         void OnEnable()
@@ -110,6 +112,13 @@ namespace Dungeon.Gameplay.Player
                 if (_animator != null)
                 {
                     _animator.SetTrigger(_dieHash);
+                }
+            }
+            else if (gameplayEvent.PreviousHealth <= 0 && gameplayEvent.NewHealth > 0)
+            {
+                if (_animator != null)
+                {
+                    _animator.SetTrigger(_respawnHash);
                 }
             }
         }
